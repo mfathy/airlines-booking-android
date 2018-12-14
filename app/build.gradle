@@ -1,18 +1,17 @@
-apply plugin: 'com.android.application'
-
-apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
     defaultConfig {
         applicationId "me.mfathy.airlinesbook"
-        minSdkVersion 21
-        targetSdkVersion 28
+        minSdkVersion rootProject.ext.androidMinSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "me.mfathy.airlinesbook.test.TestRunner"
     }
     buildTypes {
         release {
@@ -20,13 +19,106 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            jvmArgs '-noverify'
+        }
+    }
+}
+
+kapt {
+    correctErrorTypes = true
+    generateStubs = true
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    // Local
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // Android
+    implementation "androidx.vectordrawable:vectordrawable-animated:${rootProject.ext.androidXViewsVersion}"
+    implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayoutVersion}"
+    implementation "androidx.recyclerview:recyclerview:${rootProject.ext.androidXViewsVersion}"
+    implementation "com.google.android.material:material:${rootProject.ext.androidXVersion}"
+    implementation "androidx.cardview:cardview:${rootProject.ext.androidXViewsVersion}"
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.androidXVersion}"
+
+    // dagger
+    implementation "com.google.dagger:dagger-android-support:${rootProject.ext.daggerVersion}"
+    implementation "com.google.dagger:dagger-android:${rootProject.ext.daggerVersion}"
+    implementation "com.google.dagger:dagger:${rootProject.ext.daggerVersion}"
+
+    kapt "com.google.dagger:dagger-android-processor:${rootProject.ext.daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
+
+    // Retrofit
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${rootProject.ext.retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-gson:${rootProject.ext.retrofitVersion}"
+    implementation "com.squareup.retrofit2:retrofit:${rootProject.ext.retrofitVersion}"
+
+    // Okhttp
+    implementation "com.squareup.okhttp3:logging-interceptor:${rootProject.ext.okHttpVersion}"
+    implementation "com.squareup.okhttp3:okhttp:${rootProject.ext.okHttpVersion}"
+
+    // RxJava || RxKotlin || RxAndroid
+    implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroidVersion}"
+    implementation "io.reactivex.rxjava2:rxkotlin:${rootProject.ext.rxKotlinVersion}"
+
+    // ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.ext.lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-runtime:${rootProject.ext.lifecycle_version}"
+    kapt "androidx.lifecycle:lifecycle-compiler:${rootProject.ext.lifecycle_version}"
+
+    // room
+    implementation "androidx.room:room-runtime:${rootProject.ext.roomVersion}"
+    implementation "androidx.room:room-rxjava2:${rootProject.ext.roomVersion}"
+    kapt "androidx.room:room-compiler:${rootProject.ext.roomVersion}"
+
+    // Parser
+    implementation "com.google.code.gson:gson:${rootProject.ext.gsonVersion}"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:${rootProject.ext.glideVersion}"
+    kapt "com.github.bumptech.glide:compiler:${rootProject.ext.glideVersion}"
+
+    // Timber
+    implementation "com.jakewharton.timber:timber:${rootProject.ext.timberVersion}"
+
+    // testing / Junit
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${rootProject.ext.kotlinVersion}"
+    testImplementation "junit:junit:${rootProject.ext.jUnitVersion}"
+
+    // mocking
+    testImplementation "com.nhaarman:mockito-kotlin:${rootProject.ext.mockitoKotlinVersion}"
+    testImplementation "org.robolectric:robolectric:${rootProject.ext.robolectricVersion}"
+    testImplementation "org.assertj:assertj-core:${rootProject.ext.assertJVersion}"
+
+    // room and arch testing
+    testImplementation "androidx.arch.core:core-testing:${rootProject.ext.lifecycle_version}"
+    testImplementation "androidx.room:room-testing:${rootProject.ext.roomVersion}"
+
+    //  android testing
+    androidTestImplementation "com.nhaarman:mockito-kotlin:${mockitoKotlinVersion}"
+    androidTestImplementation "org.mockito:mockito-android:${mockitoAndroidVersion}"
+    androidTestImplementation "junit:junit:${rootProject.ext.jUnitVersion}"
+
+    debugImplementation "com.jakewharton.espresso:okhttp3-idling-resource:${rootProject.ext.okhttpIdlingVersion}"
+    debugImplementation "androidx.test.espresso.idling:idling-concurrent:${rootProject.ext.espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:${rootProject.ext.espressoVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:${rootProject.ext.espressoVersion}"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:${rootProject.ext.mockWebServerVersion}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${rootProject.ext.espressoVersion}"
+    androidTestImplementation "androidx.test.ext:junit:${rootProject.ext.JunitExtVersion}"
+    androidTestImplementation "androidx.test:runner:${rootProject.ext.runnerVersion}"
+    androidTestImplementation "androidx.test:rules:${rootProject.ext.runnerVersion}"
+    androidTestImplementation "androidx.test:core:${rootProject.ext.coreVersion}"
+
+    kaptTest "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
+    kaptAndroidTest "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
+
 }
