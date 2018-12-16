@@ -19,18 +19,17 @@ import java.util.concurrent.TimeUnit
  */
 object RemoteServiceFactory {
 
-    fun makeRemoteService(isDebug: Boolean, baseUrl: String): RemoteService {
+    fun makeRemoteService(isDebug: Boolean): RemoteService {
         val okHttpClient = makeOkHttpClient(makeLoggingInterceptor((isDebug)))
-        return makeRemoteService(okHttpClient, baseUrl, Gson(), null)
+        return makeRemoteService(okHttpClient, Gson(), null)
     }
 
-    fun makeRemoteService(isDebug: Boolean, baseUrl: String, accessToken: AccessTokenEntity): RemoteService {
+    fun makeRemoteService(isDebug: Boolean, accessToken: AccessTokenEntity): RemoteService {
         val okHttpClient = makeOkHttpClient(makeLoggingInterceptor((isDebug)))
-        return makeRemoteService(okHttpClient, baseUrl, Gson(), accessToken)
+        return makeRemoteService(okHttpClient, Gson(), accessToken)
     }
 
     private fun makeRemoteService(okHttpClient: OkHttpClient,
-                                  baseUrl: String,
                                   gson: Gson,
                                   accessToken: AccessTokenEntity?): RemoteService {
 
@@ -44,7 +43,7 @@ object RemoteServiceFactory {
         }
 
         val retrofit = Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl("https://api.lufthansa.com/v1")
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
