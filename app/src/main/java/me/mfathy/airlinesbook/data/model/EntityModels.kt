@@ -9,7 +9,10 @@ package me.mfathy.airlinesbook.data.model
  * application layers like domain and ui layer.
  */
 
-data class AccessTokenEntity(val accessToken: String = "", val tokenType: String = "", val expiresIn: Int = 0)
+data class AccessTokenEntity(val clintId: String = "",
+                             val accessToken: String = "",
+                             val tokenType: String = "",
+                             val expiresIn: Int = 0)
 
 data class AirportEntity(val name: String = "",
                          val airportCode: String = "",

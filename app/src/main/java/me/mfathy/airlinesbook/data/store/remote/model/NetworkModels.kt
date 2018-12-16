@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.data.remote.model
+package me.mfathy.airlinesbook.data.store.remote.model
 
 import com.google.gson.annotations.SerializedName
 
@@ -11,12 +11,14 @@ import com.google.gson.annotations.SerializedName
  */
 
 //region GetAccessToken >> models
-data class AccessToken(@SerializedName("access_token")
-                       val accessToken: String = "",
-                       @SerializedName("token_type")
-                       val tokenType: String = "",
-                       @SerializedName("expires_in")
-                       val expiresIn: Int = 0)
+data class AccessToken(
+        val clientId: String,
+        @SerializedName("access_token")
+        val accessToken: String = "",
+        @SerializedName("token_type")
+        val tokenType: String = "",
+        @SerializedName("expires_in")
+        val expiresIn: Int = 0)
 //endregion
 
 //region GetAirports >> models
@@ -57,7 +59,7 @@ data class Airport(@SerializedName("CityCode")
 
 
 data class Airports(@SerializedName("Airport")
-                    val airport: Airport)
+                    val airportList: List<Airport>)
 
 
 data class Name(@SerializedName("@LanguageCode")
@@ -100,7 +102,7 @@ data class TotalJourney(@SerializedName("Duration")
 
 
 data class ScheduleResource(@SerializedName("Schedule")
-                            val schedule: Schedule)
+                            val schedule: List<Schedule>)
 
 
 data class Arrival(@SerializedName("AirportCode")

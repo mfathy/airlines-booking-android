@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.data.local.model
+package me.mfathy.airlinesbook.data.store.local.models
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -15,6 +15,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "access_token")
 data class CachedAccessToken(
         @PrimaryKey
+        @ColumnInfo(name = "client_id")
+        val clientId: String = "",
         @ColumnInfo(name = "token")
         val accessToken: String = "",
         @ColumnInfo(name = "token_type")
@@ -39,3 +41,9 @@ data class CachedAirport(
         val countryCode: String = "",
         @ColumnInfo(name = "location_type")
         val locationType: String = "")
+
+@Entity(tableName = "cache_config")
+data class CacheConfig(
+        @PrimaryKey(autoGenerate = true)
+        var id: Int = -1,
+        var lastCacheTime: Long)

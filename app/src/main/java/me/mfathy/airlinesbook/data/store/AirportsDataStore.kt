@@ -80,16 +80,10 @@ interface AirportsDataStore {
     fun isAccessTokenCached(): Single<Boolean>
 
     /**
-     * Check that airports cached in the local data store are expired.
-     * @return Completable observable indicates success of failure.
-     */
-    fun isAirportsCacheExpired(): Single<Boolean>
-
-    /**
      * Check that access token cached in the local data store is expired.
      * @return Completable observable indicates success of failure.
      */
-    fun isAccessTokenCacheExpired(): Single<Boolean>
+    fun isCacheExpired(): Single<Boolean>
 
     /**
      * Sets the last time the cache saved.

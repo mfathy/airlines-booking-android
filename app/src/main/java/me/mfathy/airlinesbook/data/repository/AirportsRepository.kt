@@ -3,6 +3,8 @@ package me.mfathy.airlinesbook.data.repository
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
+import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 
@@ -13,6 +15,15 @@ import me.mfathy.airlinesbook.data.model.ScheduleEntity
  * Data repository contact to define layer actions.
  */
 interface AirportsRepository {
+
+    /**
+     * Returns an access token to be used in accessing the rest of remote API from the server.
+     * @param clientId lufthansa application key.
+     * @param clientSecret lufthansa application secret key.
+     * @param grantType lufthansa grant access type
+     * @return a Single observable which will emit an AccessTokenEntity or error.
+     */
+    fun getAccessToken(clientId: String, clientSecret: String, grantType: String): Single<AccessTokenEntity>
 
     /**
      * Returns a flowable which emits a list of airport entities.
