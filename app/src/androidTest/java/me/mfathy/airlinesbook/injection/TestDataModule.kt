@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.test.injection
+package me.mfathy.airlinesbook.injection
 
 import com.nhaarman.mockito_kotlin.mock
 import dagger.Module
