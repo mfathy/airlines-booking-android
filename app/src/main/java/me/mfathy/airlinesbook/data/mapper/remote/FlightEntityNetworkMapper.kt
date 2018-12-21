@@ -10,7 +10,6 @@ import javax.inject.Inject
  * Created by Mohammed Fathy on 15/12/2018.
  * dev.mfathy@gmail.com
  */
-
 open class FlightEntityNetworkMapper @Inject constructor(): EntityMapper<FlightEntity, FlightItem> {
     override fun mapFromEntity(entity: FlightEntity): FlightItem {
         throw UnsupportedOperationException("FlightItem is readonly: parsed from remote data store only.")
