@@ -18,7 +18,7 @@ data class AccessToken(
         @SerializedName("token_type")
         val tokenType: String = "",
         @SerializedName("expires_in")
-        val expiresIn: Int = 0)
+        val expiresIn: Long = 0)
 //endregion
 
 //region GetAirports >> models
@@ -58,8 +58,7 @@ data class Airport(@SerializedName("CityCode")
                    val locationType: String = "")
 
 
-data class Airports(@SerializedName("Airport")
-                    val airportList: List<Airport>)
+data class Airports(val airportList: List<Airport>)
 
 
 data class Name(@SerializedName("@LanguageCode")
@@ -101,8 +100,7 @@ data class TotalJourney(@SerializedName("Duration")
                         val duration: String = "")
 
 
-data class ScheduleResource(@SerializedName("Schedule")
-                            val schedule: List<Schedule>)
+data class ScheduleResource(val schedule: List<Schedule>)
 
 
 data class Arrival(@SerializedName("AirportCode")
@@ -114,7 +112,7 @@ data class Arrival(@SerializedName("AirportCode")
 
 
 data class Terminal(@SerializedName("Name")
-                    val name: Int = 0)
+                    val name: String = "")
 
 
 data class FlightItem(@SerializedName("Departure")

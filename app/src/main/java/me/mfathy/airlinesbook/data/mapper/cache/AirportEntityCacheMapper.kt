@@ -8,6 +8,8 @@ import javax.inject.Inject
 /**
  * Created by Mohammed Fathy on 15/12/2018.
  * dev.mfathy@gmail.com
+ *
+ * A helper class to map AirportEntity to/from CachedAirport
  */
 class AirportEntityCacheMapper @Inject constructor() : EntityMapper<AirportEntity, CachedAirport> {
 

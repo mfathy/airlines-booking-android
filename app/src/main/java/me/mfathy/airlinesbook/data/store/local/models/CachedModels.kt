@@ -11,19 +11,6 @@ import androidx.room.PrimaryKey
  *
  * CachedModels: a kotlin file that contains all the cached layer models required by the CacheDataStore.
  */
-
-@Entity(tableName = "access_token")
-data class CachedAccessToken(
-        @PrimaryKey
-        @ColumnInfo(name = "client_id")
-        val clientId: String = "",
-        @ColumnInfo(name = "token")
-        val accessToken: String = "",
-        @ColumnInfo(name = "token_type")
-        val tokenType: String = "",
-        @ColumnInfo(name = "expires_in")
-        val expiresIn: Int = 0)
-
 @Entity(tableName = "airports")
 data class CachedAirport(
         @ColumnInfo(name = "airport_name")
@@ -42,8 +29,10 @@ data class CachedAirport(
         @ColumnInfo(name = "location_type")
         val locationType: String = "")
 
-@Entity(tableName = "cache_config")
+@Entity(tableName = "config")
 data class CacheConfig(
         @PrimaryKey(autoGenerate = true)
-        var id: Int = -1,
+        @ColumnInfo(name = "id")
+        var id: Int = 1,
+        @ColumnInfo(name = "last_cache_time")
         var lastCacheTime: Long)

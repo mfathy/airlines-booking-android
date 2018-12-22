@@ -12,6 +12,9 @@ import me.mfathy.airlinesbook.data.preference.PreferenceHelper
 import me.mfathy.airlinesbook.data.store.AirportsDataStoreFactory
 import javax.inject.Inject
 
+/**
+ * AirportsRepository implementation
+ */
 class AirportsRepositoryImpl @Inject constructor(
         private val factory: AirportsDataStoreFactory,
         private val preferenceHelper: PreferenceHelper
@@ -21,19 +24,20 @@ class AirportsRepositoryImpl @Inject constructor(
         //  Get cached access token.
         val accessToken = preferenceHelper.getAccessToken()
         return if (accessToken.accessToken.isBlank())
-            //  Get access token from remote API.
-            factory.getRemoteDataStore().getAccessToken(
-                    clientId,
-                    clientSecret,
-                    grantType
-            ).flatMap {
-                //  Save cache expire trigger.
-                factory.getCacheDataStore().setLastCacheTime(it.expiresIn)
-                        .andThen(Single.just(it))
-            }.doOnSuccess {
-                //  Save access token after getting it from Remote Api.
-                preferenceHelper.setAccessToken(it)
-            }
+        //  Get access token from remote API.
+            factory.getDataStore(false, true)
+                    .getAccessToken(
+                            clientId,
+                            clientSecret,
+                            grantType
+                    ).flatMap {
+                        //  Save cache expire trigger.
+                        factory.getCacheDataStore().setLastCacheTime(it.expiresIn)
+                                .andThen(Single.just(it))
+                    }.doOnSuccess {
+                        //  Save access token after getting it from Remote Api.
+                        preferenceHelper.setAccessToken(it)
+                    }
         else
             Single.just(accessToken)
     }
@@ -59,7 +63,8 @@ class AirportsRepositoryImpl @Inject constructor(
     }
 
     override fun getAirport(airportCode: String, lang: String, limit: Int, offset: Int): Single<AirportEntity> {
-        return Single.zip(factory.getCacheDataStore().isAirportCached(airportCode),
+        return Single.zip(
+                factory.getCacheDataStore().isAirportCached(airportCode),
                 factory.getCacheDataStore().isCacheExpired(),
                 BiFunction<Boolean, Boolean, Pair<Boolean, Boolean>> { isCached, isExpired ->
                     Pair(isCached, isExpired)
@@ -75,7 +80,7 @@ class AirportsRepositoryImpl @Inject constructor(
     }
 
     override fun getFlightSchedules(origin: String, destination: String, flightDate: String, limit: Int, offset: Int): Flowable<List<ScheduleEntity>> {
-        return factory.getRemoteDataStore()
+        return factory.getDataStore(false, true)
                 .getFlightSchedules(origin, destination, flightDate, limit, offset)
     }
 

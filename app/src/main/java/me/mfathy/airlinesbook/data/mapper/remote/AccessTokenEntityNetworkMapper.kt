@@ -8,6 +8,8 @@ import javax.inject.Inject
 /**
  * Created by Mohammed Fathy on 15/12/2018.
  * dev.mfathy@gmail.com
+ *
+ * A helper class to map AccessTokenEntity to/from AccessToken
  */
 open class AccessTokenEntityNetworkMapper @Inject constructor() : EntityMapper<AccessTokenEntity, AccessToken> {
     override fun mapFromEntity(entity: AccessTokenEntity): AccessToken {
