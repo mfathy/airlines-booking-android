@@ -1,17 +1,18 @@
-package me.mfathy.airlinesbook.domain.interactor
+package me.mfathy.airlinesbook.domain.interactor.base
 
 import io.reactivex.Completable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableCompletableObserver
 import me.mfathy.airlinesbook.domain.executor.ExecutionThread
+import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 
 /**
  * A CompletableUseCase is an abstract class which provide a Completable observable to
  * indicate completion or error.
  */
 abstract class CompletableUseCase<in Params> constructor(
-        private val subscriberThread: ExecutionThread,
+        private val subscriberThread: SubscribeThread,
         private val postExecutionThread: ExecutionThread) {
 
     private val disposables = CompositeDisposable()

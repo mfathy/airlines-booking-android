@@ -1,24 +1,27 @@
-package me.mfathy.airlinesbook.domain.interactor
+package me.mfathy.airlinesbook.domain.interactor.base
 
-import io.reactivex.Observable
+import io.reactivex.Flowable
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import io.reactivex.observers.DisposableObserver
+import io.reactivex.subscribers.DisposableSubscriber
 import me.mfathy.airlinesbook.domain.executor.ExecutionThread
+import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 
 /**
- * ObservableUseCase is is an abstract class which provide a Observable observable to
+ * FlowableUseCase is is an abstract class which provide a Flowable observable to
  * emit required data or error.
+ *
+ * This observable support backpressure.
  */
-abstract class ObservableUseCase<T, in Params> constructor(
-        private val subscriberThread: ExecutionThread,
+abstract class FlowableUseCase<T, in Params> constructor(
+        private val subscriberThread: SubscribeThread,
         private val postExecutionThread: ExecutionThread) {
 
     private val disposables = CompositeDisposable()
 
-    protected abstract fun buildUseCaseObservable(params: Params? = null): Observable<T>
+    protected abstract fun buildUseCaseObservable(params: Params? = null): Flowable<T>
 
-    open fun execute(singleObserver: DisposableObserver<T>, params: Params? = null) {
+    open fun execute(singleObserver: DisposableSubscriber<T>, params: Params? = null) {
         val single = this.buildUseCaseObservable(params)
                 .subscribeOn(subscriberThread.scheduler)
                 .observeOn(postExecutionThread.scheduler)
