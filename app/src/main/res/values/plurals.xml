@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <plurals name="stops_plurals">
+        <item quantity="one">Direct</item>
+        <item quantity="other">%d Stops</item>
+    </plurals>
+</resources>
