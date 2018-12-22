@@ -58,6 +58,7 @@ ext {
     glassfishAnnotationVersion = '10.0-b28'
     lifecycle_version = '2.0.0'
     roomVersion = '2.1.0-alpha03'
+    alerterVersion = '4.0.0'
 
     //Testing
     jUnitVersion = '4.12'

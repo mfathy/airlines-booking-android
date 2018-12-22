@@ -14,6 +14,8 @@ import org.robolectric.RuntimeEnvironment
 /**
  * Created by Mohammed Fathy on 16/12/2018.
  * dev.mfathy@gmail.com
+ *
+ * Unit test for CacheConfigDao
  */
 @RunWith(RobolectricTestRunner::class)
 class CacheConfigDaoTest {
@@ -36,7 +38,8 @@ class CacheConfigDaoTest {
     @Test
     fun testGetCacheConfigReturnsData() {
         val cacheConfig = AirportFactory.makeCacheConfig()
-        database.cacheConfigDao().insertCacheConfig(cacheConfig)
+        database.cacheConfigDao().insertCacheConfig(cacheConfig).test()
+
 
         val testObserver = database.cacheConfigDao().getCacheConfig().test()
         testObserver.assertValue(cacheConfig)
@@ -44,13 +47,4 @@ class CacheConfigDaoTest {
         testObserver.assertNoErrors()
     }
 
-    @Test
-    fun deleteCacheConfig() {
-        val cacheConfig = AirportFactory.makeCacheConfig()
-        database.cacheConfigDao().insertCacheConfig(cacheConfig)
-        database.cacheConfigDao().deleteCacheConfig()
-
-        val testObserver = database.cacheConfigDao().getCacheConfig().test()
-        testObserver.assertNoValues()
-    }
 }

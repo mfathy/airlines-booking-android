@@ -4,6 +4,8 @@ import android.app.Application
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
+import me.mfathy.airlinesbook.data.preference.PreferenceHelper
+import me.mfathy.airlinesbook.data.preference.PreferenceHelperImpl
 import me.mfathy.airlinesbook.data.store.AirportsDataStore
 import me.mfathy.airlinesbook.data.store.local.AirportsCacheDataStore
 import me.mfathy.airlinesbook.data.store.local.db.AirportsDatabase
@@ -22,6 +24,12 @@ abstract class CacheModule {
         @JvmStatic
         fun providesDatabase(application: Application): AirportsDatabase {
             return AirportsDatabase.getInstance(application)
+        }
+
+        @Provides
+        @JvmStatic
+        fun providesPreferenceHelper(application: Application): PreferenceHelper {
+            return PreferenceHelperImpl(application)
         }
     }
 

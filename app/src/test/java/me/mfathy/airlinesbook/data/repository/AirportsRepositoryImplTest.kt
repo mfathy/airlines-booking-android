@@ -6,11 +6,12 @@ import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import me.mfathy.airlinesbook.BuildConfig
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.AirportEntity
+import me.mfathy.airlinesbook.data.preference.PreferenceHelper
 import me.mfathy.airlinesbook.data.store.AirportsDataStore
 import me.mfathy.airlinesbook.data.store.AirportsDataStoreFactory
-import me.mfathy.airlinesbook.data.store.remote.AirportsRemoteDataStore
 import me.mfathy.airlinesbook.factory.AirportFactory
 import org.junit.Before
 import org.junit.Test
@@ -20,14 +21,16 @@ import org.mockito.junit.MockitoJUnitRunner
 /**
  * Created by Mohammed Fathy on 17/12/2018.
  * dev.mfathy@gmail.com
+ *
+ * Unit test for AirportsRepositoryImpl
  */
 @RunWith(MockitoJUnitRunner::class)
 class AirportsRepositoryImplTest {
 
     private val mockStore = mock<AirportsDataStore>()
-    private val mockRemoteStore = mock<AirportsRemoteDataStore>()
     private val mockFactory = mock<AirportsDataStoreFactory>()
-    private val repository = AirportsRepositoryImpl(mockFactory)
+    private val mockPreferenceHelper = mock<PreferenceHelper>()
+    private val repository = AirportsRepositoryImpl(mockFactory, mockPreferenceHelper)
 
     @Before
     fun setup() {
@@ -37,24 +40,38 @@ class AirportsRepositoryImplTest {
 
     @Test
     fun testGetAccessTokenCompletes() {
-        stubGetAccessToken(Single.just(AirportFactory.makeAccessTokenEntity()))
-        stubIsAccessTokenCached(Single.just(false))
-        stubIsCacheExpired(Single.just(false))
-        stubSaveAccessToken(Completable.complete())
-
-        val testObserver = repository.getAccessToken("67s77as7sd", "5a3sda2a2", "").test()
+        val entity = AccessTokenEntity(BuildConfig.CLIENT_ID)
+        stubPreferenceHelper(entity)
+        stubGetAccessTokenEntity(Single.just(entity))
+        stubSetLastCacheTime(Completable.complete())
+        val testObserver = repository.getAccessToken(
+                BuildConfig.CLIENT_ID,
+                BuildConfig.CLIENT_SECRET,
+                BuildConfig.GRANT_TYPE).test()
         testObserver.assertComplete()
     }
 
     @Test
     fun testGetAccessTokenReturnsData() {
-        val entity = AirportFactory.makeAccessTokenEntity()
-        stubGetAccessToken(Single.just(entity))
-        stubIsAccessTokenCached(Single.just(false))
-        stubIsCacheExpired(Single.just(false))
-        stubSaveAccessToken(Completable.complete())
+        val entity = AccessTokenEntity(BuildConfig.CLIENT_ID)
+        stubPreferenceHelper(entity)
+        stubGetAccessTokenEntity(Single.just(entity))
+        stubSetLastCacheTime(Completable.complete())
+        val testObserver = repository.getAccessToken(
+                BuildConfig.CLIENT_ID,
+                BuildConfig.CLIENT_SECRET,
+                BuildConfig.GRANT_TYPE).test()
+        testObserver.assertValue(entity)
+    }
 
-        val testObserver = repository.getAccessToken("67s77as7sd", "5a3sda2a2", "").test()
+    @Test
+    fun testGetCachedAccessTokenReturnsData() {
+        val entity = AirportFactory.makeAccessTokenEntity()
+        stubPreferenceHelper(entity)
+        val testObserver = repository.getAccessToken(
+                BuildConfig.CLIENT_ID,
+                BuildConfig.CLIENT_SECRET,
+                BuildConfig.GRANT_TYPE).test()
         testObserver.assertValue(entity)
     }
 
@@ -65,7 +82,7 @@ class AirportsRepositoryImplTest {
         stubAreAirportsCached(Single.just(false))
         stubIsCacheExpired(Single.just(false))
         stubSaveAirports(Completable.complete())
-
+        stubSetLastCacheTime(Completable.complete())
         val testObservable = repository.getAirports("en", 1, 1).test()
         testObservable.assertComplete()
     }
@@ -77,15 +94,39 @@ class AirportsRepositoryImplTest {
         stubAreAirportsCached(Single.just(false))
         stubIsCacheExpired(Single.just(false))
         stubSaveAirports(Completable.complete())
-
+        stubSetLastCacheTime(Completable.complete())
         val testObservable = repository.getAirports("en", 1, 1).test()
         testObservable.assertValue(listOf(entity))
     }
 
     @Test
+    fun testGetAirportCompletes() {
+        val entity = AirportFactory.makeAirportEntity()
+        stubGetAirport(Single.just(entity))
+        stubIsAirportCached(Single.just(false))
+        stubIsCacheExpired(Single.just(false))
+        stubSaveAirport(Completable.complete())
+        stubSetLastCacheTime(Completable.complete())
+        val testObservable = repository.getAirport(entity.airportCode, "en", 1, 1).test()
+        testObservable.assertComplete()
+    }
+
+    @Test
+    fun testGetAirportReturnsData() {
+        val entity = AirportFactory.makeAirportEntity()
+        stubGetAirport(Single.just(entity))
+        stubIsAirportCached(Single.just(false))
+        stubIsCacheExpired(Single.just(false))
+        stubSaveAirport(Completable.complete())
+        stubSetLastCacheTime(Completable.complete())
+        val testObservable = repository.getAirport(entity.airportCode, "en", 1, 1).test()
+        testObservable.assertValue(entity)
+    }
+
+    @Test
     fun testGetFlightSchedulesCompletes() {
-        stubFactoryGetRemoteDataStore()
-        val testObserver = repository.getFlightSchedules("CAI", "RUH", 1, 1).test()
+        stubFactoryGetFlightSchedules()
+        val testObserver = repository.getFlightSchedules("CAI", "RUH", "2019-01-01", 1, 1).test()
         testObserver.assertComplete()
     }
 
@@ -94,6 +135,36 @@ class AirportsRepositoryImplTest {
         stubClearAirports(Completable.complete())
         val testObserver = repository.clearAirports().test()
         testObserver.assertComplete()
+    }
+
+    @Test
+    fun testGetFlightScheduleDetailsCompletes() {
+        val airportCodes = arrayOf("CAI")
+        val airportEntity = AirportFactory.makeAirportEntity()
+        stubGetAirport(Single.just(airportEntity))
+        stubIsAirportCached(Single.just(false))
+        stubIsCacheExpired(Single.just(false))
+        stubSaveAirport(Completable.complete())
+        stubSetLastCacheTime(Completable.complete())
+        val testSubscriber = repository.getFlightScheduleDetails(airportCodes, "en", 1, 1).test()
+        testSubscriber.assertComplete()
+    }
+
+    @Test
+    fun testGetFlightScheduleDetailsReturnsData() {
+        val airportCodes = arrayOf("CAI")
+        val airportEntity = AirportFactory.makeAirportEntity()
+        stubGetAirport(Single.just(airportEntity))
+        stubIsAirportCached(Single.just(false))
+        stubIsCacheExpired(Single.just(false))
+        stubSaveAirport(Completable.complete())
+        stubSetLastCacheTime(Completable.complete())
+        val testSubscriber = repository.getFlightScheduleDetails(airportCodes, "en", 1, 1).test()
+        testSubscriber.assertValue(listOf(airportEntity))
+    }
+
+    private fun stubPreferenceHelper(entity: AccessTokenEntity) {
+        whenever(mockPreferenceHelper.getAccessToken()).thenReturn(entity)
     }
 
     private fun stubClearAirports(complete: Completable?) {
@@ -108,36 +179,53 @@ class AirportsRepositoryImplTest {
         whenever(mockFactory.getCacheDataStore()).thenReturn(mockStore)
     }
 
-    private fun stubFactoryGetRemoteDataStore() {
-        whenever(mockFactory.getRemoteDataStore()).thenReturn(mockRemoteStore)
+    private fun stubSetLastCacheTime(completable: Completable) {
+        whenever(mockStore.setLastCacheTime(any())).thenReturn(completable)
     }
 
-    private fun stubGetAccessToken(single: Single<AccessTokenEntity>) {
-        whenever(mockStore.getAccessToken(any(), any(), any())).thenReturn(single)
+    private fun stubFactoryGetFlightSchedules() {
+        whenever(mockStore.getFlightSchedules(
+                any(),
+                any(),
+                any(),
+                any(),
+                any()
+        )).thenReturn(Flowable.just(listOf()))
     }
 
-    private fun stubIsAccessTokenCached(single: Single<Boolean>) {
-        whenever(mockStore.isAccessTokenCached()).thenReturn(single)
+    private fun stubGetFlightDetails(observable: Flowable<List<AirportEntity>>) {
+        whenever(mockStore.getFlightScheduleDetails(any())).thenReturn(observable)
     }
 
     private fun stubIsCacheExpired(single: Single<Boolean>) {
         whenever(mockStore.isCacheExpired()).thenReturn(single)
     }
 
-    private fun stubSaveAccessToken(completable: Completable) {
-        whenever(mockStore.saveAccessToken(any()))
-                .thenReturn(completable)
-    }
-
     private fun stubSaveAirports(completable: Completable) {
         whenever(mockStore.saveAirports(any())).thenReturn(completable)
     }
 
+    private fun stubSaveAirport(completable: Completable) {
+        whenever(mockStore.saveAirport(any())).thenReturn(completable)
+    }
+
     private fun stubAreAirportsCached(single: Single<Boolean>?) {
-        whenever(mockStore.areAirportsCached()).thenReturn(single)
+        whenever(mockStore.areAirportsCached(any())).thenReturn(single)
+    }
+
+    private fun stubIsAirportCached(single: Single<Boolean>?) {
+        whenever(mockStore.isAirportCached(any())).thenReturn(single)
     }
 
     private fun stubGetAirports(observable: Flowable<List<AirportEntity>>?) {
         whenever(mockStore.getAirports(any(), any(), any())).thenReturn(observable)
+    }
+
+    private fun stubGetAirport(observable: Single<AirportEntity>?) {
+        whenever(mockStore.getAirport(any(), any(), any(), any())).thenReturn(observable)
+    }
+
+    private fun stubGetAccessTokenEntity(observable: Single<AccessTokenEntity>) {
+        whenever(mockStore.getAccessToken(any(), any(), any())).thenReturn(observable)
     }
 }

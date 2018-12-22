@@ -3,7 +3,7 @@ package me.mfathy.airlinesbook.data.mapper.cache
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.store.local.models.CachedAirport
 import me.mfathy.airlinesbook.factory.AirportFactory
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -11,14 +11,16 @@ import org.junit.runners.JUnit4
 /**
  * Created by Mohammed Fathy on 15/12/2018.
  * dev.mfathy@gmail.com
+ *
+ * Unit test for AirportEntityCacheMapper
  */
 @RunWith(JUnit4::class)
-class AirportEntityCacheMapperTest{
+class AirportEntityCacheMapperTest {
 
     private val mapper = AirportEntityCacheMapper()
 
     @Test
-    fun testMapFromEntityMapsData(){
+    fun testMapFromEntityMapsData() {
         val entity = AirportFactory.makeAirportEntity()
         val cachedAirport = mapper.mapFromEntity(entity)
 
@@ -26,7 +28,7 @@ class AirportEntityCacheMapperTest{
     }
 
     @Test
-    fun testMapTOEntityMapsData(){
+    fun testMapTOEntityMapsData() {
         val cachedAirport = AirportFactory.makeCachedAirport()
         val entity = mapper.mapToEntity(cachedAirport)
 

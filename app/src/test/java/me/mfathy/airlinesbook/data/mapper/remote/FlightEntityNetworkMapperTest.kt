@@ -12,6 +12,8 @@ import kotlin.test.assertEquals
 /**
  * Created by Mohammed Fathy on 15/12/2018.
  * dev.mfathy@gmail.com
+ *
+ * Unit test for FlightEntityNetworkMapper
  */
 @RunWith(JUnit4::class)
 class FlightEntityNetworkMapperTest {

@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.domain.airports
+package me.mfathy.airlinesbook.domain.interactor.airports
 
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
@@ -6,6 +6,7 @@ import io.reactivex.Observable
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
 import me.mfathy.airlinesbook.domain.executor.ExecutionThread
+import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 import me.mfathy.airlinesbook.factory.AirportFactory
 import org.junit.Before
 import org.junit.Test
@@ -31,11 +32,13 @@ class GetAirportsTest {
     lateinit var mockDataRepository: AirportsRepository
     @Mock
     lateinit var mockExecutionThread: ExecutionThread
+    @Mock
+    lateinit var mockSubscribeThread: SubscribeThread
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        mGetAirports = GetAirports(mockDataRepository, mockExecutionThread, mockExecutionThread)
+        mGetAirports = GetAirports(mockDataRepository, mockSubscribeThread, mockExecutionThread)
     }
 
     @Test

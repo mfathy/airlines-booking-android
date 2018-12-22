@@ -1,18 +1,14 @@
-package me.mfathy.airlinesbook.domain.airports
+package me.mfathy.airlinesbook.domain.interactor.airports
 
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
-import io.reactivex.Observable
-import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
 import me.mfathy.airlinesbook.domain.executor.ExecutionThread
-import me.mfathy.airlinesbook.factory.AirportFactory
+import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
@@ -33,10 +29,13 @@ class ClearAirportsTest {
     @Mock
     lateinit var mockExecutionThread: ExecutionThread
 
+    @Mock
+    lateinit var mockSubscribeThread: SubscribeThread
+
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        mClearAirports = ClearAirports(mockDataRepository, mockExecutionThread, mockExecutionThread)
+        mClearAirports = ClearAirports(mockDataRepository, mockSubscribeThread, mockExecutionThread)
     }
 
     @Test

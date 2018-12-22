@@ -3,15 +3,16 @@ package me.mfathy.airlinesbook.data.mapper.remote
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.store.remote.model.Airport
 import me.mfathy.airlinesbook.factory.AirportFactory
+import org.junit.Assert.assertEquals
 import org.junit.Test
-
-import org.junit.Assert.*
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 
 /**
  * Created by Mohammed Fathy on 15/12/2018.
  * dev.mfathy@gmail.com
+ *
+ * Unit test for AirportEntityNetworkMapper
  */
 @RunWith(JUnit4::class)
 class AirportEntityNetworkMapperTest {

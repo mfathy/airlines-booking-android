@@ -3,6 +3,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+def keystorePropertiesFile = rootProject.file("airlines.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion rootProject.ext.androidCompileSdkVersion
     defaultConfig {
@@ -13,10 +17,31 @@ android {
         versionName "1.0"
         testInstrumentationRunner "me.mfathy.airlinesbook.test.TestRunner"
     }
+
+    signingConfigs {
+        config {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "CLIENT_ID", "\"7szzzfvzgkeufcva7b9w8y3q\""
+            buildConfigField "String", "GRANT_TYPE", "\"client_credentials\""
+            buildConfigField "String", "CLIENT_SECRET", "\"uEdW35yNZd\""
+            signingConfig signingConfigs.config
+        }
+
+        debug {
+            buildConfigField "String", "CLIENT_ID", "\"7szzzfvzgkeufcva7b9w8y3q\""
+            buildConfigField "String", "GRANT_TYPE", "\"client_credentials\""
+            buildConfigField "String", "CLIENT_SECRET", "\"uEdW35yNZd\""
+            signingConfig signingConfigs.config
         }
     }
 
@@ -53,6 +78,10 @@ dependencies {
     implementation "com.google.dagger:dagger-android:${rootProject.ext.daggerVersion}"
     implementation "com.google.dagger:dagger:${rootProject.ext.daggerVersion}"
 
+    implementation 'androidx.appcompat:appcompat:1.0.0-alpha1'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
+    implementation 'com.google.android.material:material:1.0.0-alpha1'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
     kapt "com.google.dagger:dagger-android-processor:${rootProject.ext.daggerVersion}"
     kapt "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
 
@@ -89,6 +118,8 @@ dependencies {
     // Timber
     implementation "com.jakewharton.timber:timber:${rootProject.ext.timberVersion}"
 
+    implementation "com.tapadoo.android:alerter:${rootProject.ext.alerterVersion}"
+
     // testing / Junit
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:${rootProject.ext.kotlinVersion}"
     testImplementation "junit:junit:${rootProject.ext.jUnitVersion}"
@@ -120,5 +151,6 @@ dependencies {
 
     kaptTest "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
     kaptAndroidTest "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
+
 
 }

@@ -2,15 +2,11 @@ package me.mfathy.airlinesbook.data.store.local
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import me.mfathy.airlinesbook.data.mapper.cache.AccessTokenEntityCacheMapper
 import me.mfathy.airlinesbook.data.mapper.cache.AirportEntityCacheMapper
 import me.mfathy.airlinesbook.data.store.local.db.AirportsDatabase
 import me.mfathy.airlinesbook.factory.AirportFactory
-import org.junit.Before
-import org.junit.Test
-
-import org.junit.Assert.*
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
@@ -18,6 +14,8 @@ import org.robolectric.RuntimeEnvironment
 /**
  * Created by Mohammed Fathy on 16/12/2018.
  * dev.mfathy@gmail.com
+ *
+ * Unit test for AirportsCacheDataStore
  */
 @RunWith(RobolectricTestRunner::class)
 class AirportsCacheDataStoreTest {
@@ -30,19 +28,9 @@ class AirportsCacheDataStoreTest {
             AirportsDatabase::class.java)
             .allowMainThreadQueries()
             .build()
-    private val entityTokenMapper = AccessTokenEntityCacheMapper()
     private val entityAirportsMapper = AirportEntityCacheMapper()
-    private val cacheStore = AirportsCacheDataStore(database, entityTokenMapper, entityAirportsMapper)
+    private val cacheStore = AirportsCacheDataStore(database, entityAirportsMapper)
 
-
-    @Test
-    fun testGetAccessTokenReturnsData() {
-        val token = AirportFactory.makeAccessTokenEntity()
-        cacheStore.saveAccessToken(token).test()
-
-        val testObserver = cacheStore.getAccessToken(token.clintId, "", "").test()
-        testObserver.assertValue(token)
-    }
 
     @Test
     fun testGetAirportsReturnsData() {
@@ -53,9 +41,27 @@ class AirportsCacheDataStoreTest {
         testObserver.assertValue(listOf(airportEntity))
     }
 
+    @Test
+    fun testGetAirportReturnsData() {
+        val airportEntity = AirportFactory.makeAirportEntity()
+        cacheStore.saveAirport(airportEntity).test()
+
+        val testObserver = cacheStore.getAirport(airportEntity.airportCode, "en", 10, 1).test()
+        testObserver.assertValue(airportEntity)
+    }
+
     @Test(expected = UnsupportedOperationException::class)
     fun testGetFlightSchedulesThrowsException() {
-        cacheStore.getFlightSchedules("", "", 10,1).test()
+        cacheStore.getFlightSchedules("", "", "2019-01-01", 10, 1).test()
+    }
+
+    @Test
+    fun testGetFlightScheduleDetailsReturnsData() {
+        val entity = AirportFactory.makeAirportEntity()
+        cacheStore.saveAirport(entity).test()
+
+        val testObserver = cacheStore.getFlightScheduleDetails(arrayOf(entity.airportCode)).test()
+        testObserver.assertValue(listOf(entity))
     }
 
     @Test
@@ -67,23 +73,16 @@ class AirportsCacheDataStoreTest {
     }
 
     @Test
+    fun testSaveAirportCompletes() {
+        val airportEntity = AirportFactory.makeAirportEntity()
+        val testObserver = cacheStore.saveAirport(airportEntity).test()
+
+        testObserver.assertComplete()
+    }
+
+    @Test
     fun testClearAirportsCompletes() {
         val testObserver = cacheStore.clearAirports().test()
-        testObserver.assertComplete()
-    }
-
-    @Test
-    fun testSaveAccessTokenCompletes() {
-        val accessTokenEntity = AirportFactory.makeAccessTokenEntity()
-        val testObserver = cacheStore.saveAccessToken(accessTokenEntity).test()
-
-        testObserver.assertComplete()
-    }
-
-    @Test
-    fun testClearAccessTokenCompletes() {
-        val testObserver = cacheStore.clearAccessToken().test()
-
         testObserver.assertComplete()
     }
 
@@ -92,30 +91,34 @@ class AirportsCacheDataStoreTest {
         val airportEntity = AirportFactory.makeAirportEntity()
         cacheStore.saveAirports(listOf(airportEntity)).test()
 
-        val testObserver = cacheStore.areAirportsCached().test()
+        val testObserver = cacheStore.areAirportsCached(1).test()
         testObserver.assertValue(true)
-
     }
 
     @Test
-    fun testIsAccessTokenCachedReturnsTrue() {
-        val entity = AirportFactory.makeAccessTokenEntity()
-        cacheStore.saveAccessToken(entity).test()
+    fun testIsAirportCachedReturnsTrue() {
+        val airportEntity = AirportFactory.makeAirportEntity()
+        cacheStore.saveAirport(airportEntity).test()
 
-        val testObserver = cacheStore.isAccessTokenCached().test()
+        val testObserver = cacheStore.isAirportCached(airportEntity.airportCode).test()
         testObserver.assertValue(true)
     }
 
     @Test
     fun testIsCacheExpiredReturnExpired() {
-        cacheStore.setLastCacheTime(System.currentTimeMillis() - 10000).test()
+        cacheStore.setLastCacheTime(System.currentTimeMillis() + 10000).test()
         val testObserver = cacheStore.isCacheExpired().test()
-        testObserver.assertValue(true)
+        testObserver.assertValue(false)
     }
 
     @Test
     fun testSetLastCacheTimeCompletes() {
         val testObserver = cacheStore.setLastCacheTime(1000L).test()
         testObserver.assertComplete()
+    }
+
+    @Test(expected = UnsupportedOperationException::class)
+    fun testGetAccessTokenThrowsException() {
+        cacheStore.getAccessToken("", "", "").test()
     }
 }

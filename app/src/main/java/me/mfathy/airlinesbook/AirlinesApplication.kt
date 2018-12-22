@@ -26,6 +26,7 @@ class AirlinesApplication : Application(), HasActivityInjector {
         super.onCreate()
         setupTimber()
         setupDagger()
+
     }
 
     private fun setupDagger() {

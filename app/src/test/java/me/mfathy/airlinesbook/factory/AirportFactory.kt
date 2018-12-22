@@ -5,7 +5,6 @@ import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.model.FlightEntity
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 import me.mfathy.airlinesbook.data.store.local.models.CacheConfig
-import me.mfathy.airlinesbook.data.store.local.models.CachedAccessToken
 import me.mfathy.airlinesbook.data.store.local.models.CachedAirport
 import me.mfathy.airlinesbook.data.store.remote.model.*
 
@@ -42,22 +41,12 @@ object AirportFactory {
         )
     }
 
-    fun makeCachedAccessToken(): CachedAccessToken {
-        return CachedAccessToken(
-                DataFactory.randomString(),
-                DataFactory.randomString(),
-                DataFactory.randomString(),
-                DataFactory.randomInt()
-
-        )
-    }
-
     fun makeAccessTokenEntity(): AccessTokenEntity {
         return AccessTokenEntity(
-                "test1",
                 DataFactory.randomString(),
                 DataFactory.randomString(),
-                DataFactory.randomInt()
+                DataFactory.randomString(),
+                DataFactory.randomInt().toLong()
         )
     }
 
@@ -78,7 +67,7 @@ object AirportFactory {
                 DataFactory.randomString(),
                 DataFactory.randomString(),
                 DataFactory.randomString(),
-                DataFactory.randomInt()
+                DataFactory.randomInt().toLong()
         )
     }
 
@@ -101,12 +90,12 @@ object AirportFactory {
                 departure = Departure(
                         airportCode = DataFactory.randomString(),
                         scheduledTimeLocal = ScheduledTimeLocal(DataFactory.randomString()),
-                        terminal = Terminal(0)),
+                        terminal = Terminal("0")),
                 marketingCarrier = MarketingCarrier(airlineID = DataFactory.randomString()),
                 arrival = Arrival(
                         airportCode = DataFactory.randomString(),
                         scheduledTimeLocal = ScheduledTimeLocal(DataFactory.randomString()),
-                        terminal = Terminal(0))
+                        terminal = Terminal("0"))
         )
     }
 
@@ -116,5 +105,21 @@ object AirportFactory {
 
     fun makeCacheConfig(): CacheConfig {
         return CacheConfig(lastCacheTime = 0L)
+    }
+
+    fun makeAirportResponseString(): String {
+        return "{\"AirportResource\": {\"Airports\": {\"Airport\": {\"AirportCode\": \"AAR\"}}}}"
+    }
+
+    fun makeAirportsResponseString(): String {
+        return "{\"AirportResource\": {\"Airports\": {\"Airport\": [{\"AirportCode\": \"AAR\"},{\"AirportCode\": \"ABC\"}]}}}"
+    }
+
+    fun makeFlightScheduleResponseString(): String {
+        return "{\"ScheduleResource\": {\"Schedule\": {\"TotalJourney\": {\"Duration\": \"P2\"}}}}"
+    }
+
+    fun makeFlightSchedulesResponseString(): String {
+        return "{\"ScheduleResource\": {\"Schedule\": [{\"TotalJourney\": {\"Duration\": \"P2\"}},{\"TotalJourney\": {\"Duration\": \"P2\"}}]}}"
     }
 }
