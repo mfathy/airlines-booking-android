@@ -22,7 +22,7 @@ import javax.inject.Inject
 open class AirportsCacheDataStore @Inject constructor(
         private val airportsDatabase: AirportsDatabase,
         private val airportMapper: AirportEntityCacheMapper
-) : AirportsDataStore {
+) : AirportsCache {
 
     override fun getAirports(lang: String, limit: Int, offset: Int): Flowable<List<AirportEntity>> {
         return airportsDatabase.cachedAirportsDao().getCachedAirports().map { airports ->
@@ -98,9 +98,5 @@ open class AirportsCacheDataStore @Inject constructor(
                     .subscribe()
             Completable.complete()
         }
-    }
-
-    override fun getAccessToken(clientId: String, clientSecret: String, grantType: String): Single<AccessTokenEntity> {
-        throw java.lang.UnsupportedOperationException("Not supported in AirportsCacheDataStore")
     }
 }

@@ -7,6 +7,7 @@ import dagger.Provides
 import me.mfathy.airlinesbook.data.preference.PreferenceHelper
 import me.mfathy.airlinesbook.data.preference.PreferenceHelperImpl
 import me.mfathy.airlinesbook.data.store.AirportsDataStore
+import me.mfathy.airlinesbook.data.store.local.AirportsCache
 import me.mfathy.airlinesbook.data.store.local.AirportsCacheDataStore
 import me.mfathy.airlinesbook.data.store.local.db.AirportsDatabase
 
@@ -35,5 +36,5 @@ abstract class CacheModule {
 
 
     @Binds
-    abstract fun bindCacheStore(cache: AirportsCacheDataStore): AirportsDataStore
+    abstract fun bindCacheStore(cache: AirportsCacheDataStore): AirportsCache
 }

@@ -30,7 +30,7 @@ open class AirportsRemoteDataStore @Inject constructor(
         private val accessDataMapper: AccessTokenEntityNetworkMapper,
         private val airportsDataMapper: AirportEntityNetworkMapper,
         private val scheduleDataMapper: ScheduleEntityNetworkMapper
-) : AirportsDataStore {
+) : AirportsRemote {
 
     override fun getAccessToken(clientId: String, clientSecret: String, grantType: String): Single<AccessTokenEntity> {
         return if (!networkUtils.hasConnection()) Single.error(NetworkConnectionException())
@@ -63,37 +63,5 @@ open class AirportsRemoteDataStore @Inject constructor(
         else serviceApi.get().getAirport(airportCode, lang, 1, offset).map { response ->
             airportsDataMapper.mapToEntity(response.airportResource.airports.airportList.first())
         }
-    }
-
-    override fun saveAirport(airportEntity: AirportEntity): Completable {
-        throw UnsupportedOperationException("Not supported in RemoteDataStore")
-    }
-
-    override fun getFlightScheduleDetails(airportCodes: Array<String>): Flowable<List<AirportEntity>> {
-        throw UnsupportedOperationException("Not supported in RemoteDataStore")
-    }
-
-    override fun saveAirports(airportEntities: List<AirportEntity>): Completable {
-        throw UnsupportedOperationException("Not supported in RemoteDataStore")
-    }
-
-    override fun clearAirports(): Completable {
-        throw UnsupportedOperationException("Not supported in RemoteDataStore")
-    }
-
-    override fun areAirportsCached(limit: Int): Single<Boolean> {
-        throw UnsupportedOperationException("Not supported in RemoteDataStore")
-    }
-
-    override fun isAirportCached(airportCode: String): Single<Boolean> {
-        throw UnsupportedOperationException("Not supported in RemoteDataStore")
-    }
-
-    override fun isCacheExpired(): Single<Boolean> {
-        throw UnsupportedOperationException("Not supported in RemoteDataStore")
-    }
-
-    override fun setLastCacheTime(lastCache: Long): Completable {
-        throw UnsupportedOperationException("Not supported in RemoteDataStore")
     }
 }

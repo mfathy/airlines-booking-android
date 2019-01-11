@@ -117,8 +117,4 @@ class AirportsCacheDataStoreTest {
         testObserver.assertComplete()
     }
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun testGetAccessTokenThrowsException() {
-        cacheStore.getAccessToken("", "", "").test()
-    }
 }

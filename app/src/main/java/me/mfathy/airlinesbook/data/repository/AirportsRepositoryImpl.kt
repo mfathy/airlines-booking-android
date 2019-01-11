@@ -25,7 +25,7 @@ class AirportsRepositoryImpl @Inject constructor(
         val accessToken = preferenceHelper.getAccessToken()
         return if (accessToken.accessToken.isBlank())
         //  Get access token from remote API.
-            factory.getDataStore(false, true)
+            factory.getRemoteDataStore()
                     .getAccessToken(
                             clientId,
                             clientSecret,

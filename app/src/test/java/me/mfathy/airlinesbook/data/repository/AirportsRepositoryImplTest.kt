@@ -12,6 +12,8 @@ import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.preference.PreferenceHelper
 import me.mfathy.airlinesbook.data.store.AirportsDataStore
 import me.mfathy.airlinesbook.data.store.AirportsDataStoreFactory
+import me.mfathy.airlinesbook.data.store.local.AirportsCache
+import me.mfathy.airlinesbook.data.store.remote.AirportsRemote
 import me.mfathy.airlinesbook.factory.AirportFactory
 import org.junit.Before
 import org.junit.Test
@@ -28,6 +30,8 @@ import org.mockito.junit.MockitoJUnitRunner
 class AirportsRepositoryImplTest {
 
     private val mockStore = mock<AirportsDataStore>()
+    private val mockRemote = mock<AirportsRemote>()
+    private val mockCache = mock<AirportsCache>()
     private val mockFactory = mock<AirportsDataStoreFactory>()
     private val mockPreferenceHelper = mock<PreferenceHelper>()
     private val repository = AirportsRepositoryImpl(mockFactory, mockPreferenceHelper)
@@ -36,6 +40,7 @@ class AirportsRepositoryImplTest {
     fun setup() {
         stubFactoryGetDataStore()
         stubFactoryGetCachedDataStore()
+        stubFactoryGetRemoteDataStore()
     }
 
     @Test
@@ -168,7 +173,7 @@ class AirportsRepositoryImplTest {
     }
 
     private fun stubClearAirports(complete: Completable?) {
-        whenever(mockStore.clearAirports()).thenReturn(complete)
+        whenever(mockCache.clearAirports()).thenReturn(complete)
     }
 
     private fun stubFactoryGetDataStore() {
@@ -176,11 +181,15 @@ class AirportsRepositoryImplTest {
     }
 
     private fun stubFactoryGetCachedDataStore() {
-        whenever(mockFactory.getCacheDataStore()).thenReturn(mockStore)
+        whenever(mockFactory.getCacheDataStore()).thenReturn(mockCache)
+    }
+
+    private fun stubFactoryGetRemoteDataStore() {
+        whenever(mockFactory.getRemoteDataStore()).thenReturn(mockRemote)
     }
 
     private fun stubSetLastCacheTime(completable: Completable) {
-        whenever(mockStore.setLastCacheTime(any())).thenReturn(completable)
+        whenever(mockCache.setLastCacheTime(any())).thenReturn(completable)
     }
 
     private fun stubFactoryGetFlightSchedules() {
@@ -193,28 +202,25 @@ class AirportsRepositoryImplTest {
         )).thenReturn(Flowable.just(listOf()))
     }
 
-    private fun stubGetFlightDetails(observable: Flowable<List<AirportEntity>>) {
-        whenever(mockStore.getFlightScheduleDetails(any())).thenReturn(observable)
-    }
 
     private fun stubIsCacheExpired(single: Single<Boolean>) {
-        whenever(mockStore.isCacheExpired()).thenReturn(single)
+        whenever(mockCache.isCacheExpired()).thenReturn(single)
     }
 
     private fun stubSaveAirports(completable: Completable) {
-        whenever(mockStore.saveAirports(any())).thenReturn(completable)
+        whenever(mockCache.saveAirports(any())).thenReturn(completable)
     }
 
     private fun stubSaveAirport(completable: Completable) {
-        whenever(mockStore.saveAirport(any())).thenReturn(completable)
+        whenever(mockCache.saveAirport(any())).thenReturn(completable)
     }
 
     private fun stubAreAirportsCached(single: Single<Boolean>?) {
-        whenever(mockStore.areAirportsCached(any())).thenReturn(single)
+        whenever(mockCache.areAirportsCached(any())).thenReturn(single)
     }
 
     private fun stubIsAirportCached(single: Single<Boolean>?) {
-        whenever(mockStore.isAirportCached(any())).thenReturn(single)
+        whenever(mockCache.isAirportCached(any())).thenReturn(single)
     }
 
     private fun stubGetAirports(observable: Flowable<List<AirportEntity>>?) {
@@ -226,6 +232,6 @@ class AirportsRepositoryImplTest {
     }
 
     private fun stubGetAccessTokenEntity(observable: Single<AccessTokenEntity>) {
-        whenever(mockStore.getAccessToken(any(), any(), any())).thenReturn(observable)
+        whenever(mockRemote.getAccessToken(any(), any(), any())).thenReturn(observable)
     }
 }

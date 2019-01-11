@@ -1,6 +1,8 @@
 package me.mfathy.airlinesbook.data.store
 
+import me.mfathy.airlinesbook.data.store.local.AirportsCache
 import me.mfathy.airlinesbook.data.store.local.AirportsCacheDataStore
+import me.mfathy.airlinesbook.data.store.remote.AirportsRemote
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemoteDataStore
 import javax.inject.Inject
 
@@ -12,8 +14,8 @@ import javax.inject.Inject
  * object.
  */
 open class AirportsDataStoreFactory @Inject constructor(
-        private val cacheDataStore: AirportsCacheDataStore,
-        private val remoteDataStore: AirportsRemoteDataStore) {
+        private val cacheDataStore: AirportsCache,
+        private val remoteDataStore: AirportsRemote) {
 
     open fun getDataStore(isCached: Boolean, isCacheExpired: Boolean): AirportsDataStore {
         return if (isCached && !isCacheExpired) {
@@ -23,11 +25,11 @@ open class AirportsDataStoreFactory @Inject constructor(
         }
     }
 
-    open fun getCacheDataStore(): AirportsDataStore {
+    open fun getCacheDataStore(): AirportsCache {
         return cacheDataStore
     }
 
-    fun getRemoteDataStore(): AirportsDataStore {
+    open fun getRemoteDataStore(): AirportsRemote {
         return remoteDataStore
     }
 }

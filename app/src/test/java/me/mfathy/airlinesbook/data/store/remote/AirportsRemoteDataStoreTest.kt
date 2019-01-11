@@ -208,47 +208,6 @@ class AirportsRemoteDataStoreTest {
         testObserver.assertValue(listOf(entity))
     }
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun testSaveAirportThrowsException() {
-        remoteDataStore.saveAirport(AirportFactory.makeAirportEntity())
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun testSaveAirportsThrowsException() {
-        remoteDataStore.saveAirports(listOf())
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun testGetFlightScheduleDetailsThrowsException() {
-        remoteDataStore.getFlightScheduleDetails(arrayOf(""))
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun testClearAirportsThrowsException() {
-        remoteDataStore.clearAirports()
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun testAreAirportsCachedThrowsException() {
-        remoteDataStore.areAirportsCached(1)
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun testIsAirportCachedThrowsException() {
-        remoteDataStore.isAirportCached(DataFactory.randomString())
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun testIsCacheExpiredThrowsException() {
-        remoteDataStore.isCacheExpired()
-    }
-
-    @Test(expected = UnsupportedOperationException::class)
-    fun setLastCacheTimeThrowsException() {
-        remoteDataStore.setLastCacheTime(0L)
-    }
-
-
     private fun stubRemoteService() {
         whenever(mockServiceApiLazy.get()).thenReturn(mockServiceApi)
     }

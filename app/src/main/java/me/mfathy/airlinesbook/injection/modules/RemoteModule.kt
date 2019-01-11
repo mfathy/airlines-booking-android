@@ -7,6 +7,7 @@ import dagger.Provides
 import me.mfathy.airlinesbook.BuildConfig
 import me.mfathy.airlinesbook.data.preference.PreferenceHelper
 import me.mfathy.airlinesbook.data.store.AirportsDataStore
+import me.mfathy.airlinesbook.data.store.remote.AirportsRemote
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemoteDataStore
 import me.mfathy.airlinesbook.data.store.remote.service.AuthServiceApi
 import me.mfathy.airlinesbook.data.store.remote.service.OAuthInterceptor
@@ -52,6 +53,6 @@ abstract class RemoteModule {
     }
 
     @Binds
-    abstract fun bindRemoteStore(cache: AirportsRemoteDataStore): AirportsDataStore
+    abstract fun bindRemoteStore(remote: AirportsRemoteDataStore): AirportsRemote
 
 }
