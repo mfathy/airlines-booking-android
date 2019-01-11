@@ -11,7 +11,7 @@ import javax.inject.Inject
  *
  * A helper class to map AirportEntity to/from Airport
  */
-open class AirportEntityNetworkMapper @Inject constructor() : EntityMapper<AirportEntity, Airport> {
+open class AirportEntityNetworkMapper @Inject constructor() : RemoteEntityMapper<AirportEntity, Airport> {
     override fun mapToEntity(domain: Airport): AirportEntity {
         return AirportEntity(
                 domain.names.name.title,
@@ -24,7 +24,4 @@ open class AirportEntityNetworkMapper @Inject constructor() : EntityMapper<Airpo
         )
     }
 
-    override fun mapFromEntity(entity: AirportEntity): Airport {
-        throw UnsupportedOperationException("Airport is readonly: parsed from remote data store only.")
-    }
 }

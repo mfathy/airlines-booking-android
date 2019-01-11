@@ -20,11 +20,6 @@ class FlightEntityNetworkMapperTest {
 
     private val mapper = FlightEntityNetworkMapper()
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun testMapFromEntityThrowsException() {
-        mapper.mapFromEntity(AirportFactory.makeFlightEntity())
-    }
-
     @Test
     fun testMapToEntityMapsData() {
         val flightItem = AirportFactory.makeFlightItem()

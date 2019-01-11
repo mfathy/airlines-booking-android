@@ -20,11 +20,6 @@ class ScheduleEntityNetworkMapperTest {
     private val flightMapper = FlightEntityNetworkMapper()
     private val mapper = ScheduleEntityNetworkMapper(flightMapper)
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun testMapFromEntityThrowsException() {
-        mapper.mapFromEntity(ScheduleEntity(duration = "", flights = listOf(AirportFactory.makeFlightEntity())))
-    }
-
     @Test
     fun testMapToEntityMapsData() {
         val schedule = AirportFactory.makeSchedule()

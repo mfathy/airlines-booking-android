@@ -27,10 +27,6 @@ class AirportEntityNetworkMapperTest {
         assertEqualsData(entity, airport)
     }
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun testMapFromEntityThrowsException() {
-        mapper.mapFromEntity(AirportFactory.makeAirportEntity())
-    }
 
     private fun assertEqualsData(entity: AirportEntity, airport: Airport) {
         assertEquals(entity.name, airport.names.name.title)

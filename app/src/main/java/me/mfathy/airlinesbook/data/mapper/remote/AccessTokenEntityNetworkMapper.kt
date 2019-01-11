@@ -11,10 +11,7 @@ import javax.inject.Inject
  *
  * A helper class to map AccessTokenEntity to/from AccessToken
  */
-open class AccessTokenEntityNetworkMapper @Inject constructor() : EntityMapper<AccessTokenEntity, AccessToken> {
-    override fun mapFromEntity(entity: AccessTokenEntity): AccessToken {
-        throw UnsupportedOperationException("Airport is readonly: parsed from remote data store only.")
-    }
+open class AccessTokenEntityNetworkMapper @Inject constructor() : RemoteEntityMapper<AccessTokenEntity, AccessToken> {
 
     override fun mapToEntity(domain: AccessToken): AccessTokenEntity {
         return AccessTokenEntity(

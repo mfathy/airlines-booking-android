@@ -18,10 +18,6 @@ import org.junit.runners.JUnit4
 class AccessTokenEntityNetworkMapperTest {
     private val mapper = AccessTokenEntityNetworkMapper()
 
-    @Test(expected = UnsupportedOperationException::class)
-    fun testMapFromEntityThrowsException() {
-        mapper.mapFromEntity(AirportFactory.makeAccessTokenEntity())
-    }
 
     @Test
     fun testMapToEntityMapsData() {
