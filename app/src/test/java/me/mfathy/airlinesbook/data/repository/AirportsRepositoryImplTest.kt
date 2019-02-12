@@ -1,8 +1,5 @@
 package me.mfathy.airlinesbook.data.repository
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -16,6 +13,7 @@ import me.mfathy.airlinesbook.factory.AirportFactory
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 /**
@@ -27,9 +25,9 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class AirportsRepositoryImplTest {
 
-    private val mockStore = mock<AirportsDataStore>()
-    private val mockFactory = mock<AirportsDataStoreFactory>()
-    private val mockPreferenceHelper = mock<PreferenceHelper>()
+    private val mockStore = mock(AirportsDataStore::class.java)
+    private val mockFactory = mock(AirportsDataStoreFactory::class.java)
+    private val mockPreferenceHelper = mock(PreferenceHelper::class.java)
     private val repository = AirportsRepositoryImpl(mockFactory, mockPreferenceHelper)
 
     @Before
@@ -164,68 +162,64 @@ class AirportsRepositoryImplTest {
     }
 
     private fun stubPreferenceHelper(entity: AccessTokenEntity) {
-        whenever(mockPreferenceHelper.getAccessToken()).thenReturn(entity)
+        `when`(mockPreferenceHelper.getAccessToken()).thenReturn(entity)
     }
 
     private fun stubClearAirports(complete: Completable?) {
-        whenever(mockStore.clearAirports()).thenReturn(complete)
+        `when`(mockStore.clearAirports()).thenReturn(complete)
     }
 
     private fun stubFactoryGetDataStore() {
-        whenever(mockFactory.getDataStore(any(), any())).thenReturn(mockStore)
+        `when`(mockFactory.getDataStore(anyBoolean(), anyBoolean())).thenReturn(mockStore)
     }
 
     private fun stubFactoryGetCachedDataStore() {
-        whenever(mockFactory.getCacheDataStore()).thenReturn(mockStore)
+        `when`(mockFactory.getCacheDataStore()).thenReturn(mockStore)
     }
 
     private fun stubSetLastCacheTime(completable: Completable) {
-        whenever(mockStore.setLastCacheTime(any())).thenReturn(completable)
+        `when`(mockStore.setLastCacheTime(anyLong())).thenReturn(completable)
     }
 
     private fun stubFactoryGetFlightSchedules() {
-        whenever(mockStore.getFlightSchedules(
-                any(),
-                any(),
-                any(),
-                any(),
-                any()
+        `when`(mockStore.getFlightSchedules(
+                anyString(),
+                anyString(),
+                anyString(),
+                anyInt(),
+                anyInt()
         )).thenReturn(Flowable.just(listOf()))
     }
 
-    private fun stubGetFlightDetails(observable: Flowable<List<AirportEntity>>) {
-        whenever(mockStore.getFlightScheduleDetails(any())).thenReturn(observable)
-    }
-
     private fun stubIsCacheExpired(single: Single<Boolean>) {
-        whenever(mockStore.isCacheExpired()).thenReturn(single)
+        `when`(mockStore.isCacheExpired()).thenReturn(single)
     }
 
     private fun stubSaveAirports(completable: Completable) {
-        whenever(mockStore.saveAirports(any())).thenReturn(completable)
+        `when`(mockStore.saveAirports(anyList())).thenReturn(completable)
     }
 
     private fun stubSaveAirport(completable: Completable) {
-        whenever(mockStore.saveAirport(any())).thenReturn(completable)
+        `when`(mockStore.saveAirport(any(AirportEntity::class.java))).thenReturn(completable)
     }
 
     private fun stubAreAirportsCached(single: Single<Boolean>?) {
-        whenever(mockStore.areAirportsCached(any())).thenReturn(single)
+        `when`(mockStore.areAirportsCached(anyInt())).thenReturn(single)
     }
 
     private fun stubIsAirportCached(single: Single<Boolean>?) {
-        whenever(mockStore.isAirportCached(any())).thenReturn(single)
+        `when`(mockStore.isAirportCached(anyString())).thenReturn(single)
     }
 
     private fun stubGetAirports(observable: Flowable<List<AirportEntity>>?) {
-        whenever(mockStore.getAirports(any(), any(), any())).thenReturn(observable)
+        `when`(mockStore.getAirports(anyString(), anyInt(), anyInt())).thenReturn(observable)
     }
 
     private fun stubGetAirport(observable: Single<AirportEntity>?) {
-        whenever(mockStore.getAirport(any(), any(), any(), any())).thenReturn(observable)
+        `when`(mockStore.getAirport(anyString(), anyString(), anyInt(), anyInt())).thenReturn(observable)
     }
 
     private fun stubGetAccessTokenEntity(observable: Single<AccessTokenEntity>) {
-        whenever(mockStore.getAccessToken(any(), any(), any())).thenReturn(observable)
+        `when`(mockStore.getAccessToken(anyString(), anyString(), anyString())).thenReturn(observable)
     }
 }

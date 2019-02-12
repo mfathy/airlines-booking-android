@@ -1,8 +1,5 @@
 package me.mfathy.airlinesbook.domain.interactor.token
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Single
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
@@ -13,7 +10,10 @@ import me.mfathy.airlinesbook.factory.DataFactory
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -66,7 +66,7 @@ class GetAccessTokenTest {
                 DataFactory.randomString()
         )
         mGetAccessToken.buildUseCaseObservable(params).test()
-        verify(mockDataRepository).getAccessToken(any(), any(), any())
+        verify(mockDataRepository).getAccessToken(anyString(), anyString(), anyString())
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -75,7 +75,7 @@ class GetAccessTokenTest {
     }
 
     private fun stubGetAccessToken(single: Single<AccessTokenEntity>) {
-        whenever(mockDataRepository.getAccessToken(any(), any(), any())).thenReturn(single)
+        `when`(mockDataRepository.getAccessToken(anyString(), anyString(), anyString())).thenReturn(single)
     }
 
 }

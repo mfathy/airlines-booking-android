@@ -82,7 +82,7 @@ ext {
 
     truthVersion = '0.42'
 
-    robolectricVersion = '3.4.2'
+    robolectricVersion = '4.1'
 
     espressoVersion = '3.1.2-alpha01'
 

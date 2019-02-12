@@ -1,7 +1,5 @@
 package me.mfathy.airlinesbook.domain.interactor.airports
 
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Completable
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
 import me.mfathy.airlinesbook.domain.executor.ExecutionThread
@@ -10,6 +8,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -56,6 +56,6 @@ class ClearAirportsTest {
     }
 
     private fun stubDataRepositoryClearAirports(completable: Completable) {
-        whenever(mockDataRepository.clearAirports()).thenReturn(completable)
+        `when`(mockDataRepository.clearAirports()).thenReturn(completable)
     }
 }

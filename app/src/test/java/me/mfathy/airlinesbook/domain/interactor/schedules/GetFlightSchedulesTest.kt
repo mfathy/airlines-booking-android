@@ -1,7 +1,5 @@
 package me.mfathy.airlinesbook.domain.interactor.schedules
 
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Flowable
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
@@ -15,6 +13,8 @@ import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -72,7 +72,7 @@ class GetFlightSchedulesTest {
     }
 
     private fun stubDataRepositoryGetFlightSchedules(flowbale: Flowable<List<ScheduleEntity>>) {
-        whenever(mockDataRepository.getFlightSchedules(
+        `when`(mockDataRepository.getFlightSchedules(
                 ArgumentMatchers.anyString(),
                 ArgumentMatchers.anyString(),
                 ArgumentMatchers.anyString(),
