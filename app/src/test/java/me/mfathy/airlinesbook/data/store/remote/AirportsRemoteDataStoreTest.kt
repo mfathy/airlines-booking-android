@@ -1,9 +1,5 @@
 package me.mfathy.airlinesbook.data.store.remote
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import dagger.Lazy
 import io.reactivex.Single
 import me.mfathy.airlinesbook.data.mapper.remote.AccessTokenEntityNetworkMapper
@@ -22,7 +18,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito.*
 
 /**
  * Created by Mohammed Fathy on 16/12/2018.
@@ -33,13 +31,13 @@ import org.mockito.ArgumentMatchers.anyString
 @RunWith(JUnit4::class)
 class AirportsRemoteDataStoreTest {
 
-    private val mockServiceApiLazy: Lazy<RemoteServiceApi> = mock()
-    private val mockServiceApi: RemoteServiceApi = mock()
-    private val mockNetworkUtils: NetworkUtils = mock()
-    private val mockAuthServiceApi: AuthServiceApi = mock()
-    private val mockAccessMapper = mock<AccessTokenEntityNetworkMapper>()
-    private val mockAirportsMapper = mock<AirportEntityNetworkMapper>()
-    private val mockScheduleMapper = mock<ScheduleEntityNetworkMapper>()
+    private val mockServiceApi = mock(RemoteServiceApi::class.java)
+    private val mockServiceApiLazy = Lazy<RemoteServiceApi> {mockServiceApi}
+    private val mockNetworkUtils = mock(NetworkUtils::class.java)
+    private val mockAuthServiceApi= mock(AuthServiceApi::class.java)
+    private val mockAccessMapper = mock(AccessTokenEntityNetworkMapper::class.java)
+    private val mockAirportsMapper = mock(AirportEntityNetworkMapper::class.java)
+    private val mockScheduleMapper = mock(ScheduleEntityNetworkMapper::class.java)
     private val remoteDataStore = AirportsRemoteDataStore(mockNetworkUtils,
             mockAuthServiceApi,
             mockServiceApiLazy,
@@ -59,7 +57,7 @@ class AirportsRemoteDataStoreTest {
         val token = AirportFactory.makeAccessToken()
         val entity = AirportFactory.makeAccessTokenEntity()
         stubAuthService(Single.just(token))
-        stubAccessTokenEntityNetworkMapperMapFromModel(token, entity)
+        stubAccessTokenEntityNetworkMapperMapFromModel(entity)
         val testObserver = remoteDataStore.getAccessToken(
                 DataFactory.randomString(),
                 DataFactory.randomString(),
@@ -73,7 +71,7 @@ class AirportsRemoteDataStoreTest {
         val token = AirportFactory.makeAccessToken()
         val entity = AirportFactory.makeAccessTokenEntity()
         stubAuthService(Single.just(token))
-        stubAccessTokenEntityNetworkMapperMapFromModel(token, entity)
+        stubAccessTokenEntityNetworkMapperMapFromModel(entity)
         val testObserver = remoteDataStore.getAccessToken(
                 DataFactory.randomString(),
                 DataFactory.randomString(),
@@ -87,14 +85,14 @@ class AirportsRemoteDataStoreTest {
         val token = AirportFactory.makeAccessToken()
         val entity = AirportFactory.makeAccessTokenEntity()
         stubAuthService(Single.just(token))
-        stubAccessTokenEntityNetworkMapperMapFromModel(token, entity)
+        stubAccessTokenEntityNetworkMapperMapFromModel(entity)
         remoteDataStore.getAccessToken(
                 DataFactory.randomString(),
                 DataFactory.randomString(),
                 DataFactory.randomString()
         ).test()
 
-        verify(mockAuthServiceApi).getAccessToken(any(), any(), any())
+        verify(mockAuthServiceApi).getAccessToken(anyString(), anyString(), anyString())
     }
 
     @Test
@@ -118,7 +116,7 @@ class AirportsRemoteDataStoreTest {
         stubAirportEntityNetworkMapperMapFromModel(airport, entity)
 
         remoteDataStore.getAirports("en", 1, 1).test()
-        verify(mockServiceApi).getAirports(any(), any(), any())
+        verify(mockServiceApi).getAirports(anyString(), anyInt(), anyInt())
     }
 
     @Test
@@ -154,7 +152,7 @@ class AirportsRemoteDataStoreTest {
         stubAirportEntityNetworkMapperMapFromModel(airport, entity)
 
         remoteDataStore.getAirport(DataFactory.randomString(), "en", 1, 1).test()
-        verify(mockServiceApi).getAirport(any(), any(), any(), any())
+        verify(mockServiceApi).getAirport(anyString(), anyString(), anyInt(), anyInt())
     }
 
     @Test
@@ -192,7 +190,7 @@ class AirportsRemoteDataStoreTest {
         stubScheduleEntityNetworkMapperMapFromModel(schedule, entity)
 
         remoteDataStore.getFlightSchedules("CAI", "RUH", "2019-01-01", 1, 1).test()
-        verify(mockServiceApi).getFlightSchedules(anyString(), anyString(), anyString(), any(), any())
+        verify(mockServiceApi).getFlightSchedules(anyString(), anyString(), anyString(), anyInt(), anyInt())
     }
 
     @Test
@@ -209,38 +207,38 @@ class AirportsRemoteDataStoreTest {
     }
 
     private fun stubRemoteService() {
-        whenever(mockServiceApiLazy.get()).thenReturn(mockServiceApi)
+        `when`(mockServiceApiLazy.get()).thenReturn(mockServiceApi)
     }
 
     private fun stubAuthService(single: Single<AccessToken>) {
-        whenever(mockAuthServiceApi.getAccessToken(anyString(), anyString(), anyString())).thenReturn(single)
+        `when`(mockAuthServiceApi.getAccessToken(anyString(), anyString(), anyString())).thenReturn(single)
     }
 
-    private fun stubAccessTokenEntityNetworkMapperMapFromModel(model: AccessToken, entity: AccessTokenEntity) {
-        whenever(mockAccessMapper.mapToEntity(any())).thenReturn(entity)
+    private fun stubAccessTokenEntityNetworkMapperMapFromModel(entity: AccessTokenEntity) {
+        `when`(mockAccessMapper.mapToEntity(any())).thenReturn(entity)
     }
 
     private fun stubNetworkUtils() {
-        whenever(mockNetworkUtils.hasConnection()).thenReturn(true)
+        `when`(mockNetworkUtils.hasConnection()).thenReturn(true)
     }
 
     private fun stubRemoteServiceGetAirports(single: Single<AirportsResponse>) {
-        whenever(mockServiceApi.getAirports(any(), any(), any())).thenReturn(single)
+        `when`(mockServiceApi.getAirports(anyString(), anyInt(), anyInt())).thenReturn(single)
     }
 
     private fun stubRemoteServiceGetAirport(single: Single<AirportsResponse>) {
-        whenever(mockServiceApi.getAirport(any(), any(), any(), any())).thenReturn(single)
+        `when`(mockServiceApi.getAirport(anyString(), anyString(), anyInt(), anyInt())).thenReturn(single)
     }
 
     private fun stubAirportEntityNetworkMapperMapFromModel(model: Airport, entity: AirportEntity) {
-        whenever(mockAirportsMapper.mapToEntity(model)).thenReturn(entity)
+        `when`(mockAirportsMapper.mapToEntity(model)).thenReturn(entity)
     }
 
     private fun stubRemoteServiceGetFlightSchedules(single: Single<FlightSchedulesResponse>) {
-        whenever(mockServiceApi.getFlightSchedules(any(), any(), any(), any(), any())).thenReturn(single)
+        `when`(mockServiceApi.getFlightSchedules(anyString(), anyString(), anyString(), anyInt(), anyInt())).thenReturn(single)
     }
 
     private fun stubScheduleEntityNetworkMapperMapFromModel(model: Schedule, entity: ScheduleEntity) {
-        whenever(mockScheduleMapper.mapToEntity(model)).thenReturn(entity)
+        `when`(mockScheduleMapper.mapToEntity(model)).thenReturn(entity)
     }
 }

@@ -21,6 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <uses-library
+            android:name="android.test.runner"
+            android:required="false" />
+
         <activity
             android:name=".ui.search.SearchFlightsActivity"
             android:label="@string/title_activity_search_flights"

@@ -1,9 +1,9 @@
 package me.mfathy.airlinesbook.data.store
 
-import com.nhaarman.mockito_kotlin.mock
 import me.mfathy.airlinesbook.data.store.local.AirportsCacheDataStore
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemoteDataStore
 import org.junit.Test
+import org.mockito.Mockito.mock
 
 /**
  * Created by Mohammed Fathy on 16/12/2018.
@@ -13,8 +13,8 @@ import org.junit.Test
  */
 class AirportsDataStoreFactoryTest {
 
-    private val mockCacheStore = mock<AirportsCacheDataStore>()
-    private val mockRemoteStore = mock<AirportsRemoteDataStore>()
+    private val mockCacheStore = mock(AirportsCacheDataStore::class.java)
+    private val mockRemoteStore = mock(AirportsRemoteDataStore::class.java)
     private val factory = AirportsDataStoreFactory(
             mockCacheStore,
             mockRemoteStore
@@ -22,12 +22,12 @@ class AirportsDataStoreFactoryTest {
 
     @Test
     fun getDataStoreReturnsRemoteSourceWhenCacheExpired() {
-        assert(factory.getDataStore(false, true) is AirportsRemoteDataStore)
+        assert(factory.getDataStore(isCached = false, isCacheExpired = true) is AirportsRemoteDataStore)
     }
 
     @Test
     fun getDataStoreReturnsCacheSourceWhenCacheNotExpired() {
-        assert(factory.getDataStore(true, false) is AirportsCacheDataStore)
+        assert(factory.getDataStore(isCached = true, isCacheExpired = false) is AirportsCacheDataStore)
     }
 
     @Test

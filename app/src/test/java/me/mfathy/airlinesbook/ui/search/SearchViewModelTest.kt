@@ -1,9 +1,11 @@
 package me.mfathy.airlinesbook.ui.search
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockito_kotlin.*
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.subscribers.DisposableSubscriber
+import me.mfathy.airlinesbook.any
+import me.mfathy.airlinesbook.argumentCaptor
+import me.mfathy.airlinesbook.capture
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 import me.mfathy.airlinesbook.domain.interactor.schedules.GetFlightSchedules
@@ -17,6 +19,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Captor
+import org.mockito.Mockito.*
 
 /**
  * Created by Mohammed Fathy on 22/12/2018.
@@ -28,12 +31,12 @@ import org.mockito.Captor
 class SearchViewModelTest {
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
-    private val mockGetFlightSchedules: GetFlightSchedules = mock()
-    private val mockGetAccessToken: GetAccessToken = mock()
-    var searchViewModel = SearchViewModel(mockGetFlightSchedules, mockGetAccessToken)
+    private val mockGetFlightSchedules = mock(GetFlightSchedules::class.java)
+    private val mockGetAccessToken = mock(GetAccessToken::class.java)
+    private var searchViewModel = SearchViewModel(mockGetFlightSchedules, mockGetAccessToken)
 
     @Captor
-    val captor = argumentCaptor<DisposableSubscriber<List<ScheduleEntity>>>()
+    val airportListCaptor = argumentCaptor<DisposableSubscriber<List<ScheduleEntity>>>()
 
     @Captor
     val captorAccessToken = argumentCaptor<DisposableObserver<AccessTokenEntity>>()
@@ -51,8 +54,8 @@ class SearchViewModelTest {
 
         searchViewModel.fetchFlightSchedules("CAI", "RUH", "", 1, 1)
 
-        verify(mockGetFlightSchedules).execute(captor.capture(), any())
-        captor.firstValue.onNext(schedules)
+        verify(mockGetFlightSchedules).execute(capture(airportListCaptor), any())
+        airportListCaptor.value.onNext(schedules)
 
         Assert.assertEquals(ResourceState.SUCCESS, searchViewModel.getSchedulesLiveData().value?.status)
     }
@@ -63,8 +66,8 @@ class SearchViewModelTest {
 
         searchViewModel.fetchFlightSchedules("CAI", "RUH", "", 1, 1)
 
-        verify(mockGetFlightSchedules).execute(captor.capture(), any())
-        captor.firstValue.onNext(schedules)
+        verify(mockGetFlightSchedules).execute(capture(airportListCaptor), any())
+        airportListCaptor.value.onNext(schedules)
 
         Assert.assertEquals(schedules, searchViewModel.getSchedulesLiveData().value?.data)
     }
@@ -74,8 +77,8 @@ class SearchViewModelTest {
 
         searchViewModel.fetchFlightSchedules("CAI", "RUH", "", 1, 1)
 
-        verify(mockGetFlightSchedules).execute(captor.capture(), any())
-        captor.firstValue.onError(RuntimeException())
+        verify(mockGetFlightSchedules).execute(capture(airportListCaptor), any())
+        airportListCaptor.value.onError(RuntimeException())
 
         Assert.assertEquals(ResourceState.ERROR, searchViewModel.getSchedulesLiveData().value?.status)
     }
@@ -85,8 +88,8 @@ class SearchViewModelTest {
         val errorMessage = DataFactory.randomString()
         searchViewModel.fetchFlightSchedules("CAI", "RUH", "", 1, 1)
 
-        verify(mockGetFlightSchedules).execute(captor.capture(), any())
-        captor.firstValue.onError(RuntimeException(errorMessage))
+        verify(mockGetFlightSchedules).execute(capture(airportListCaptor), any())
+        airportListCaptor.value.onError(RuntimeException(errorMessage))
 
         Assert.assertEquals(errorMessage, searchViewModel.getSchedulesLiveData().value?.message)
     }
@@ -104,8 +107,8 @@ class SearchViewModelTest {
 
         searchViewModel.authenticateApp(DataFactory.randomString(), DataFactory.randomString(), DataFactory.randomString())
 
-        verify(mockGetAccessToken).execute(captorAccessToken.capture(), any())
-        captorAccessToken.firstValue.onNext(token)
+        verify(mockGetAccessToken).execute(capture(captorAccessToken), any())
+        captorAccessToken.value.onNext(token)
 
         Assert.assertEquals(ResourceState.SUCCESS, searchViewModel.getAccessTokenLiveData().value?.status)
     }
@@ -116,8 +119,8 @@ class SearchViewModelTest {
 
         searchViewModel.authenticateApp(DataFactory.randomString(), DataFactory.randomString(), DataFactory.randomString())
 
-        verify(mockGetAccessToken).execute(captorAccessToken.capture(), any())
-        captorAccessToken.firstValue.onNext(token)
+        verify(mockGetAccessToken).execute(capture(captorAccessToken), any())
+        captorAccessToken.value.onNext(token)
 
         Assert.assertEquals(token, searchViewModel.getAccessTokenLiveData().value?.data)
     }
@@ -127,8 +130,8 @@ class SearchViewModelTest {
 
         searchViewModel.authenticateApp(DataFactory.randomString(), DataFactory.randomString(), DataFactory.randomString())
 
-        verify(mockGetAccessToken).execute(captorAccessToken.capture(), any())
-        captorAccessToken.firstValue.onError(RuntimeException())
+        verify(mockGetAccessToken).execute(capture(captorAccessToken), any())
+        captorAccessToken.value.onError(RuntimeException())
 
         Assert.assertEquals(ResourceState.ERROR, searchViewModel.getAccessTokenLiveData().value?.status)
     }
@@ -138,8 +141,8 @@ class SearchViewModelTest {
         val errorMessage = DataFactory.randomString()
         searchViewModel.authenticateApp(DataFactory.randomString(), DataFactory.randomString(), DataFactory.randomString())
 
-        verify(mockGetAccessToken).execute(captorAccessToken.capture(), any())
-        captorAccessToken.firstValue.onError(RuntimeException(errorMessage))
+        verify(mockGetAccessToken).execute(capture(captorAccessToken), any())
+        captorAccessToken.value.onError(RuntimeException(errorMessage))
 
         Assert.assertEquals(errorMessage, searchViewModel.getAccessTokenLiveData().value?.message)
     }

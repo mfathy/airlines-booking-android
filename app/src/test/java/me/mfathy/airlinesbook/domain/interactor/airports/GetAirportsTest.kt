@@ -1,7 +1,5 @@
 package me.mfathy.airlinesbook.domain.interactor.airports
 
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Observable
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
@@ -14,6 +12,8 @@ import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -73,7 +73,7 @@ class GetAirportsTest {
     }
 
     private fun stubDataRepositoryGetAirports(observable: Observable<List<AirportEntity>>) {
-        whenever(mockDataRepository.getAirports(
+        `when`(mockDataRepository.getAirports(
                 anyString(),
                 anyInt(),
                 anyInt()

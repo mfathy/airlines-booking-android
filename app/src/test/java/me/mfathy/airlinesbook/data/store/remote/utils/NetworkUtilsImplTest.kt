@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
-import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mockito
+import org.mockito.Mockito.`when`
 
 /**
  * Created by Mohammed Fathy on 22/12/2018.
@@ -33,9 +33,9 @@ class NetworkUtilsImplTest {
     }
 
     private fun stubHasConnection() {
-        whenever(context.packageManager).thenReturn(packageManager)
-        whenever(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connManager)
-        whenever(connManager.activeNetworkInfo).thenReturn(networkInfo)
-        whenever(networkInfo.isConnected).thenReturn(true)
+        `when`(context.packageManager).thenReturn(packageManager)
+        `when`(context.getSystemService(Context.CONNECTIVITY_SERVICE)).thenReturn(connManager)
+        `when`(connManager.activeNetworkInfo).thenReturn(networkInfo)
+        `when`(networkInfo.isConnected).thenReturn(true)
     }
 }

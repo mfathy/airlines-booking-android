@@ -1,8 +1,5 @@
 package me.mfathy.airlinesbook.domain.interactor.schedules
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Flowable
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
@@ -13,7 +10,10 @@ import me.mfathy.airlinesbook.factory.DataFactory
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -69,7 +69,7 @@ class GetScheduleFlightDetailsTest {
         )
 
         mGetScheduleFlightDetails.buildUseCaseObservable(params).test()
-        verify(mockDataRepository).getFlightScheduleDetails(any(), any(), any(), any())
+        verify(mockDataRepository).getFlightScheduleDetails(any(Array<String>::class.java), anyString(), anyInt(), anyInt())
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -78,11 +78,8 @@ class GetScheduleFlightDetailsTest {
     }
 
     private fun stubDataRepositoryGetScheduleFlightDetails(flowbale: Flowable<List<AirportEntity>>) {
-        whenever(mockDataRepository.getFlightScheduleDetails(
-                any(),
-                any(),
-                any(),
-                any()
+        `when`(mockDataRepository.getFlightScheduleDetails(
+                any(Array<String>::class.java), anyString(), anyInt(), anyInt()
         )).thenReturn(flowbale)
     }
 }
