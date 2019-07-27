@@ -2,6 +2,7 @@ package me.mfathy.airlinesbook.data.store.remote
 
 import dagger.Lazy
 import io.reactivex.Single
+import me.mfathy.airlinesbook.any
 import me.mfathy.airlinesbook.data.mapper.remote.AccessTokenEntityNetworkMapper
 import me.mfathy.airlinesbook.data.mapper.remote.AirportEntityNetworkMapper
 import me.mfathy.airlinesbook.data.mapper.remote.ScheduleEntityNetworkMapper
@@ -22,6 +23,7 @@ import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.*
 
+
 /**
  * Created by Mohammed Fathy on 16/12/2018.
  * dev.mfathy@gmail.com
@@ -32,9 +34,9 @@ import org.mockito.Mockito.*
 class AirportsRemoteDataStoreTest {
 
     private val mockServiceApi = mock(RemoteServiceApi::class.java)
-    private val mockServiceApiLazy = Lazy<RemoteServiceApi> {mockServiceApi}
+    private val mockServiceApiLazy = mock(Lazy<RemoteServiceApi> { mockServiceApi }::class.java)
     private val mockNetworkUtils = mock(NetworkUtils::class.java)
-    private val mockAuthServiceApi= mock(AuthServiceApi::class.java)
+    private val mockAuthServiceApi = mock(AuthServiceApi::class.java)
     private val mockAccessMapper = mock(AccessTokenEntityNetworkMapper::class.java)
     private val mockAirportsMapper = mock(AirportEntityNetworkMapper::class.java)
     private val mockScheduleMapper = mock(ScheduleEntityNetworkMapper::class.java)

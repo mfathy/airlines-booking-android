@@ -14,8 +14,8 @@ import javax.inject.Inject
  * object.
  */
 open class AirportsDataStoreFactory @Inject constructor(
-        private val cacheDataStore: AirportsCache,
-        private val remoteDataStore: AirportsRemote) {
+        private val cacheDataStore: AirportsCacheDataStore,
+        private val remoteDataStore: AirportsRemoteDataStore) {
 
     open fun getDataStore(isCached: Boolean, isCacheExpired: Boolean): AirportsDataStore {
         return if (isCached && !isCacheExpired) {

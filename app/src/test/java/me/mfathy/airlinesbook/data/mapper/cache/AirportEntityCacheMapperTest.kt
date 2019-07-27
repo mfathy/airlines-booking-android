@@ -27,14 +27,6 @@ class AirportEntityCacheMapperTest {
         assertEqualData(entity, cachedAirport)
     }
 
-    @Test
-    fun testMapTOEntityMapsData() {
-        val cachedAirport = AirportFactory.makeCachedAirport()
-        val entity = mapper.mapToEntity(cachedAirport)
-
-        assertEqualData(entity, cachedAirport)
-    }
-
     private fun assertEqualData(entity: AirportEntity, domain: CachedAirport) {
         assertEquals(entity.airportCode, domain.airportCode)
         assertEquals(entity.cityCode, domain.cityCode)

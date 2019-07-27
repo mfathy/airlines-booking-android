@@ -25,13 +25,14 @@ data class AirportEntity(val name: String = "",
                          val countryCode: String = "",
                          val locationType: String = "") : Parcelable {
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
+            //  Todo to be removed
+            parcel.readString()!!,
+            parcel.readString()!!,
             parcel.readDouble(),
             parcel.readDouble(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString())
+            parcel.readString()!!,
+            parcel.readString()!!,
+            parcel.readString()!!)
 
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

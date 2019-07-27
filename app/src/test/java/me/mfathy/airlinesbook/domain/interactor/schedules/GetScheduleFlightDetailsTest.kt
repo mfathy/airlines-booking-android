@@ -69,7 +69,7 @@ class GetScheduleFlightDetailsTest {
         )
 
         mGetScheduleFlightDetails.buildUseCaseObservable(params).test()
-        verify(mockDataRepository).getFlightScheduleDetails(any(Array<String>::class.java), anyString(), anyInt(), anyInt())
+        verify(mockDataRepository).getFlightScheduleDetails(me.mfathy.airlinesbook.any(), anyString(), anyInt(), anyInt())
     }
 
     @Test(expected = IllegalArgumentException::class)
@@ -79,7 +79,7 @@ class GetScheduleFlightDetailsTest {
 
     private fun stubDataRepositoryGetScheduleFlightDetails(flowbale: Flowable<List<AirportEntity>>) {
         `when`(mockDataRepository.getFlightScheduleDetails(
-                any(Array<String>::class.java), anyString(), anyInt(), anyInt()
+                me.mfathy.airlinesbook.any(), anyString(), anyInt(), anyInt()
         )).thenReturn(flowbale)
     }
 }
