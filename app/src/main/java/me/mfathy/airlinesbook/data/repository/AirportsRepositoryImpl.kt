@@ -43,9 +43,10 @@ class AirportsRepositoryImpl @Inject constructor(
     }
 
     override fun getAirports(lang: String, limit: Int, offset: Int): Observable<List<AirportEntity>> {
+        val cachedAirportCount = if (offset == 0) limit else (offset + 1) * limit
         return Observable.zip(
                 //  Check if airports is cached.
-                factory.getCacheDataStore().areAirportsCached(limit).toObservable(),
+                factory.getCacheDataStore().areAirportsCached(cachedAirportCount).toObservable(),
                 //  Check if cache is expired.
                 factory.getCacheDataStore().isCacheExpired().toObservable(),
                 BiFunction<Boolean, Boolean, Pair<Boolean, Boolean>> { isCached, isExpired ->

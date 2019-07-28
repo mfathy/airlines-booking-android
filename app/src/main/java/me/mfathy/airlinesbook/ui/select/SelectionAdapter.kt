@@ -18,7 +18,7 @@ import javax.inject.Inject
 class SelectionAdapter @Inject constructor(val clickListener: (AirportEntity) -> Unit)
     : RecyclerView.Adapter<SelectionAdapter.ViewHolder>() {
 
-    var mAirports: List<AirportEntity> = arrayListOf()
+    var mAirports: MutableList<AirportEntity> = arrayListOf()
     var mAirportsFiltered: List<AirportEntity> = arrayListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectionAdapter.ViewHolder {
         val itemView = LayoutInflater
