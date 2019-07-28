@@ -3,8 +3,6 @@ package me.mfathy.airlinesbook.domain.interactor.airports
 import io.reactivex.Observable
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
-import me.mfathy.airlinesbook.domain.executor.ExecutionThread
-import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 import me.mfathy.airlinesbook.domain.interactor.base.ObservableUseCase
 import javax.inject.Inject
 
@@ -15,20 +13,11 @@ import javax.inject.Inject
  * GetAirports use case to get all airports information from the data layer.
  */
 open class GetAirports @Inject constructor(
-        private val dataRepository: AirportsRepository,
-        val subscriberThread: SubscribeThread,
-        val postExecutionThread: ExecutionThread)
-    : ObservableUseCase<List<AirportEntity>, GetAirports.Params?>(subscriberThread, postExecutionThread) {
-    public override fun buildUseCaseObservable(params: Params?): Observable<List<AirportEntity>> {
-        if (params == null) throw IllegalArgumentException("Params can't be null!")
+        private val dataRepository: AirportsRepository)
+    : ObservableUseCase<List<AirportEntity>, GetAirports.Params>() {
+    override fun buildUseCaseObservable(params: Params): Observable<List<AirportEntity>> {
         return dataRepository.getAirports(params.lang, params.limit, params.offset)
     }
 
-    data class Params constructor(val lang: String, val limit: Int, val offset: Int) {
-        companion object {
-            fun forGetAirports(lang: String, limit: Int, offset: Int): Params {
-                return Params(lang, limit, offset)
-            }
-        }
-    }
+    data class Params constructor(val lang: String, val limit: Int, val offset: Int)
 }

@@ -1,13 +1,13 @@
 package me.mfathy.airlinesbook.domain.interactor.token
 
 import io.reactivex.Single
+import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
-import me.mfathy.airlinesbook.domain.executor.ExecutionThread
-import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 import me.mfathy.airlinesbook.factory.AirportFactory
-import me.mfathy.airlinesbook.factory.DataFactory
+import me.mfathy.airlinesbook.factory.AirportFactory.makeAccessTokenParams
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyString
@@ -26,19 +26,19 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class GetAccessTokenTest {
 
+    @JvmField
+    @Rule
+    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+
     private lateinit var mGetAccessToken: GetAccessToken
 
     @Mock
     lateinit var mockDataRepository: AirportsRepository
-    @Mock
-    lateinit var mockExecutionThread: ExecutionThread
-    @Mock
-    lateinit var mockSubscribeThread: SubscribeThread
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        mGetAccessToken = GetAccessToken(mockDataRepository, mockSubscribeThread, mockExecutionThread)
+        mGetAccessToken = GetAccessToken(mockDataRepository)
     }
 
     @Test
@@ -46,13 +46,11 @@ class GetAccessTokenTest {
         val entity = AirportFactory.makeAccessTokenEntity()
         stubGetAccessToken(Single.just(entity))
 
-        val params = GetAccessToken.Params.forGetAccessToken(
-                DataFactory.randomString(),
-                DataFactory.randomString(),
-                DataFactory.randomString()
-        )
-        val testObserver = mGetAccessToken.buildUseCaseObservable(params).test()
-        testObserver.assertComplete()
+        val params = makeAccessTokenParams()
+
+        mGetAccessToken.buildUseCaseObservable(params)
+                .test()
+                .assertComplete()
     }
 
     @Test
@@ -60,18 +58,12 @@ class GetAccessTokenTest {
         val entity = AirportFactory.makeAccessTokenEntity()
         stubGetAccessToken(Single.just(entity))
 
-        val params = GetAccessToken.Params.forGetAccessToken(
-                DataFactory.randomString(),
-                DataFactory.randomString(),
-                DataFactory.randomString()
-        )
-        mGetAccessToken.buildUseCaseObservable(params).test()
-        verify(mockDataRepository).getAccessToken(anyString(), anyString(), anyString())
-    }
+        val params = makeAccessTokenParams()
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testGetAccessTokenThrowsException() {
-        mGetAccessToken.buildUseCaseObservable().test()
+        mGetAccessToken.buildUseCaseObservable(params)
+                .test()
+
+        verify(mockDataRepository).getAccessToken(anyString(), anyString(), anyString())
     }
 
     private fun stubGetAccessToken(single: Single<AccessTokenEntity>) {

@@ -1,19 +1,20 @@
 package me.mfathy.airlinesbook.domain.interactor.schedules
 
 import io.reactivex.Flowable
+import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
-import me.mfathy.airlinesbook.domain.executor.ExecutionThread
-import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 import me.mfathy.airlinesbook.factory.AirportFactory
-import me.mfathy.airlinesbook.factory.DataFactory
+import me.mfathy.airlinesbook.factory.AirportFactory.makeGetScheduleFlightDetailsParams
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
-import org.mockito.Mockito.*
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.junit.MockitoJUnitRunner
 
@@ -25,35 +26,46 @@ import org.mockito.junit.MockitoJUnitRunner
  */
 @RunWith(MockitoJUnitRunner::class)
 class GetScheduleFlightDetailsTest {
+
+    @JvmField
+    @Rule
+    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+
     private lateinit var mGetScheduleFlightDetails: GetScheduleFlightDetails
 
     @Mock
     lateinit var mockDataRepository: AirportsRepository
-    @Mock
-    lateinit var mockExecutionThread: ExecutionThread
-    @Mock
-    lateinit var mockSubscribeThread: SubscribeThread
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        mGetScheduleFlightDetails = GetScheduleFlightDetails(mockDataRepository, mockSubscribeThread, mockExecutionThread)
+        mGetScheduleFlightDetails = GetScheduleFlightDetails(mockDataRepository)
     }
 
     @Test
     fun testGetScheduleFlightDetailsCompletes() {
         val entity = AirportFactory.makeAirportEntity()
+
         stubDataRepositoryGetScheduleFlightDetails(Flowable.just(listOf(entity)))
 
-        val params = GetScheduleFlightDetails.Params.forGetScheduleFlightDetails(
-                listOf(),
-                DataFactory.randomString(),
-                DataFactory.randomInt(),
-                DataFactory.randomInt()
-        )
+        val params = makeGetScheduleFlightDetailsParams()
 
-        val testObserver = mGetScheduleFlightDetails.buildUseCaseObservable(params).test()
-        testObserver.assertComplete()
+        mGetScheduleFlightDetails.buildUseCaseObservable(params)
+                .test()
+                .assertComplete()
+    }
+
+    @Test
+    fun testGetScheduleFlightDetailsReturnsValue() {
+        val entity = AirportFactory.makeAirportEntity()
+
+        stubDataRepositoryGetScheduleFlightDetails(Flowable.just(listOf(entity)))
+
+        val params = makeGetScheduleFlightDetailsParams()
+
+        mGetScheduleFlightDetails.buildUseCaseObservable(params)
+                .test()
+                .assertValue(listOf(entity))
     }
 
     @Test
@@ -61,20 +73,12 @@ class GetScheduleFlightDetailsTest {
         val entity = AirportFactory.makeAirportEntity()
         stubDataRepositoryGetScheduleFlightDetails(Flowable.just(listOf(entity)))
 
-        val params = GetScheduleFlightDetails.Params.forGetScheduleFlightDetails(
-                listOf(),
-                DataFactory.randomString(),
-                DataFactory.randomInt(),
-                DataFactory.randomInt()
-        )
+        val params = makeGetScheduleFlightDetailsParams()
 
-        mGetScheduleFlightDetails.buildUseCaseObservable(params).test()
+        mGetScheduleFlightDetails.buildUseCaseObservable(params)
+                .test()
+
         verify(mockDataRepository).getFlightScheduleDetails(me.mfathy.airlinesbook.any(), anyString(), anyInt(), anyInt())
-    }
-
-    @Test(expected = IllegalArgumentException::class)
-    fun testGetScheduleFlightDetailsThrowsException() {
-        mGetScheduleFlightDetails.buildUseCaseObservable(null).test()
     }
 
     private fun stubDataRepositoryGetScheduleFlightDetails(flowbale: Flowable<List<AirportEntity>>) {

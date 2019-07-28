@@ -2,8 +2,6 @@ package me.mfathy.airlinesbook.domain.interactor.airports
 
 import io.reactivex.Completable
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
-import me.mfathy.airlinesbook.domain.executor.ExecutionThread
-import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 import me.mfathy.airlinesbook.domain.interactor.base.CompletableUseCase
 import javax.inject.Inject
 
@@ -14,14 +12,12 @@ import javax.inject.Inject
  * ClearAirports use case used for clearing data stores from airports.
  */
 open class ClearAirports @Inject constructor(
-        private val dataRepository: AirportsRepository,
-        val subscriberThread: SubscribeThread,
-        val postExecutionThread: ExecutionThread)
-    : CompletableUseCase<ClearAirports.Params>(subscriberThread, postExecutionThread) {
-    public override fun buildUseCaseCompletable(params: Params?): Completable {
+        private val dataRepository: AirportsRepository)
+    : CompletableUseCase() {
+
+    override fun buildUseCaseCompletable(): Completable {
         return dataRepository.clearAirports()
     }
 
     class Params
-
 }

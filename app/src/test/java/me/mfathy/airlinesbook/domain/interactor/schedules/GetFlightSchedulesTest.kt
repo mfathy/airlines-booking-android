@@ -1,15 +1,15 @@
 package me.mfathy.airlinesbook.domain.interactor.schedules
 
 import io.reactivex.Flowable
+import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
-import me.mfathy.airlinesbook.domain.executor.ExecutionThread
-import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 import me.mfathy.airlinesbook.factory.AirportFactory
+import me.mfathy.airlinesbook.factory.AirportFactory.makeGetFlightSchedulesParams
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mock
@@ -26,58 +26,79 @@ import org.mockito.junit.MockitoJUnitRunner
  */
 @RunWith(MockitoJUnitRunner::class)
 class GetFlightSchedulesTest {
+
+    @JvmField
+    @Rule
+    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+
     private lateinit var mGetFlightSchedules: GetFlightSchedules
 
     @Mock
     lateinit var mockDataRepository: AirportsRepository
-    @Mock
-    lateinit var mockExecutionThread: ExecutionThread
-    @Mock
-    lateinit var mockSubscribeThread: SubscribeThread
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        mGetFlightSchedules = GetFlightSchedules(mockDataRepository, mockSubscribeThread, mockExecutionThread)
+        mGetFlightSchedules = GetFlightSchedules(mockDataRepository)
     }
 
     @Test
     fun testGetFlightSchedulesCompletes() {
-        stubDataRepositoryGetFlightSchedules(Flowable.just(listOf(
+        val schedules = listOf(
                 AirportFactory.makeScheduleEntity(),
                 AirportFactory.makeScheduleEntity()
-        )))
+        )
 
-        val params = GetFlightSchedules.Params.forGetFlightSchedules("CAI", "RUH", "2019-01-01", 10, 1)
-        val testObserver = mGetFlightSchedules.buildUseCaseObservable(params).test()
-        testObserver.assertComplete()
+        stubDataRepositoryGetFlightSchedules(schedules)
+
+        val params = makeGetFlightSchedulesParams()
+        mGetFlightSchedules.buildUseCaseObservable(params)
+                .test()
+                .assertComplete()
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testGetFlightSchedulesThrowsException() {
-        mGetFlightSchedules.buildUseCaseObservable().test()
+
+    @Test
+    fun testGetFlightSchedulesReturnsValue() {
+        val schedules = listOf(
+                AirportFactory.makeScheduleEntity(),
+                AirportFactory.makeScheduleEntity()
+        )
+
+        stubDataRepositoryGetFlightSchedules(schedules)
+
+        val params = makeGetFlightSchedulesParams()
+        mGetFlightSchedules.buildUseCaseObservable(params)
+                .test()
+                .assertValue(schedules)
     }
+
 
     @Test
     fun testGetFlightSchedulesCallsRepository() {
-        stubDataRepositoryGetFlightSchedules(Flowable.just(listOf(
+        val schedules = listOf(
                 AirportFactory.makeScheduleEntity(),
                 AirportFactory.makeScheduleEntity()
-        )))
+        )
 
-        val params = GetFlightSchedules.Params.forGetFlightSchedules("CAI", "RUH", "2019-01-01", 10, 1)
-        mGetFlightSchedules.buildUseCaseObservable(params).test()
+        stubDataRepositoryGetFlightSchedules(schedules)
 
-        verify(mockDataRepository).getFlightSchedules(anyString(), anyString(), anyString(), anyInt(), anyInt())
+        val params = makeGetFlightSchedulesParams()
+
+        mGetFlightSchedules.buildUseCaseObservable(params)
+                .test()
+
+        verify(mockDataRepository)
+                .getFlightSchedules(anyString(), anyString(), anyString(), anyInt(), anyInt())
     }
 
-    private fun stubDataRepositoryGetFlightSchedules(flowbale: Flowable<List<ScheduleEntity>>) {
+    private fun stubDataRepositoryGetFlightSchedules(schedules: List<ScheduleEntity>) {
         `when`(mockDataRepository.getFlightSchedules(
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyString(),
-                ArgumentMatchers.anyInt(),
-                ArgumentMatchers.anyInt()
-        )).thenReturn(flowbale)
+                anyString(),
+                anyString(),
+                anyString(),
+                anyInt(),
+                anyInt()
+        )).thenReturn(Flowable.just(schedules))
     }
 }

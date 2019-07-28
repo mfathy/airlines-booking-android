@@ -1,12 +1,13 @@
 package me.mfathy.airlinesbook.domain.interactor.airports
 
 import io.reactivex.Observable
+import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
-import me.mfathy.airlinesbook.domain.executor.ExecutionThread
-import me.mfathy.airlinesbook.domain.executor.SubscribeThread
 import me.mfathy.airlinesbook.factory.AirportFactory
+import me.mfathy.airlinesbook.factory.AirportFactory.makeGetAirportParams
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentMatchers.anyInt
@@ -26,19 +27,19 @@ import org.mockito.junit.MockitoJUnitRunner
 @RunWith(MockitoJUnitRunner::class)
 class GetAirportsTest {
 
+    @JvmField
+    @Rule
+    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+
     private lateinit var mGetAirports: GetAirports
 
     @Mock
     lateinit var mockDataRepository: AirportsRepository
-    @Mock
-    lateinit var mockExecutionThread: ExecutionThread
-    @Mock
-    lateinit var mockSubscribeThread: SubscribeThread
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        mGetAirports = GetAirports(mockDataRepository, mockSubscribeThread, mockExecutionThread)
+        mGetAirports = GetAirports(mockDataRepository)
     }
 
     @Test
@@ -49,14 +50,28 @@ class GetAirportsTest {
                         AirportFactory.makeAirportEntity()
                 )))
 
-        val params = GetAirports.Params.forGetAirports("en", 2, 1)
-        val testObserver = mGetAirports.buildUseCaseObservable(params).test()
-        testObserver.assertComplete()
+        val params = makeGetAirportParams()
+
+        mGetAirports.buildUseCaseObservable(params)
+                .test()
+                .assertComplete()
     }
 
-    @Test(expected = IllegalArgumentException::class)
-    fun testGetAirportsThrowsException() {
-        mGetAirports.buildUseCaseObservable().test()
+    @Test
+    fun testGetAirportsReturnsValue() {
+        val airports = listOf(
+                AirportFactory.makeAirportEntity(),
+                AirportFactory.makeAirportEntity()
+        )
+
+        stubDataRepositoryGetAirports(
+                Observable.just(airports))
+
+        val params = makeGetAirportParams()
+
+        mGetAirports.buildUseCaseObservable(params)
+                .test()
+                .assertValue(airports)
     }
 
     @Test
@@ -67,8 +82,10 @@ class GetAirportsTest {
                         AirportFactory.makeAirportEntity()
                 )))
 
-        val params = GetAirports.Params.forGetAirports("en", 2, 1)
+        val params = makeGetAirportParams()
+
         mGetAirports.buildUseCaseObservable(params).test()
+
         verify(mockDataRepository).getAirports(anyString(), anyInt(), anyInt())
     }
 
