@@ -4,6 +4,7 @@ import io.reactivex.Flowable
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
 import me.mfathy.airlinesbook.domain.interactor.base.FlowableUseCase
+import me.mfathy.airlinesbook.extensions.rx.subscribeAndObserve
 import javax.inject.Inject
 
 /**
@@ -21,7 +22,7 @@ open class GetFlightSchedules @Inject constructor(
                 params.destination,
                 params.flightDate,
                 params.limit,
-                params.offset)
+                params.offset).subscribeAndObserve()
     }
 
     data class Params constructor(val origin: String,

@@ -4,6 +4,7 @@ import io.reactivex.Observable
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
 import me.mfathy.airlinesbook.domain.interactor.base.ObservableUseCase
+import me.mfathy.airlinesbook.extensions.rx.subscribeAndObserve
 import javax.inject.Inject
 
 /**
@@ -17,6 +18,7 @@ open class GetAirports @Inject constructor(
     : ObservableUseCase<List<AirportEntity>, GetAirports.Params>() {
     override fun buildUseCaseObservable(params: Params): Observable<List<AirportEntity>> {
         return dataRepository.getAirports(params.lang, params.limit, params.offset)
+                .subscribeAndObserve()
     }
 
     data class Params constructor(val lang: String, val limit: Int, val offset: Int)

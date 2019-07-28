@@ -36,7 +36,8 @@ open class FlightDetailsViewModel @Inject internal constructor(
                 offset
         )
 
-        val airportsSubscriber = getScheduleFlightDetails.execute(params, AirportsSubscriber())
+        val airportsSubscriber = getScheduleFlightDetails
+                .execute(params, AirportsSubscriber())
         addDisposables(airportsSubscriber)
     }
 

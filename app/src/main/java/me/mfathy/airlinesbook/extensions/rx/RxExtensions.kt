@@ -2,6 +2,7 @@ package me.mfathy.airlinesbook.extensions.rx
 
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -15,6 +16,9 @@ fun <T : Any> Single<T>.subscribeAndObserve(): Single<T> =
         subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
 fun <T : Any> Flowable<T>.subscribeAndObserve(): Flowable<T> =
+        subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+
+fun <T : Any> Observable<T>.subscribeAndObserve(): Observable<T> =
         subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
 
 fun <T : Any> Flowable<T>.observeMainThread(): Flowable<T> =

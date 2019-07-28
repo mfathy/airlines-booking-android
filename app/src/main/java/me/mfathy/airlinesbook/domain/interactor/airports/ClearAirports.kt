@@ -3,6 +3,7 @@ package me.mfathy.airlinesbook.domain.interactor.airports
 import io.reactivex.Completable
 import me.mfathy.airlinesbook.data.repository.AirportsRepository
 import me.mfathy.airlinesbook.domain.interactor.base.CompletableUseCase
+import me.mfathy.airlinesbook.extensions.rx.subscribeAndObserve
 import javax.inject.Inject
 
 /**
@@ -16,7 +17,7 @@ open class ClearAirports @Inject constructor(
     : CompletableUseCase() {
 
     override fun buildUseCaseCompletable(): Completable {
-        return dataRepository.clearAirports()
+        return dataRepository.clearAirports().subscribeAndObserve()
     }
 
     class Params
