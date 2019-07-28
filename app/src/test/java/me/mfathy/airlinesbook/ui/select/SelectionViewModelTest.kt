@@ -2,8 +2,9 @@ package me.mfathy.airlinesbook.ui.select
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.reactivex.observers.DisposableObserver
-import me.mfathy.airlinesbook.argumentCaptor
+import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
 import me.mfathy.airlinesbook.any
+import me.mfathy.airlinesbook.argumentCaptor
 import me.mfathy.airlinesbook.capture
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.domain.interactor.airports.GetAirports
@@ -26,8 +27,14 @@ import org.mockito.Mockito.*
  */
 @RunWith(JUnit4::class)
 class SelectionViewModelTest {
+
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @JvmField
+    @Rule
+    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+
     private val mockGetAirport = mock(GetAirports::class.java)
     private var selectionViewModel = SelectionViewModel(mockGetAirport)
 
@@ -36,6 +43,9 @@ class SelectionViewModelTest {
 
     @Test
     fun testFetchAirportsExecutesUseCase() {
+
+        stubGetAirportsUseCase()
+
         selectionViewModel.fetchAirports(DataFactory.randomString(), DataFactory.randomInt(), DataFactory.randomInt())
 
         verify(mockGetAirport, times(1)).execute(any(), any())
@@ -43,11 +53,15 @@ class SelectionViewModelTest {
 
     @Test
     fun testFetchAirportsReturnsSuccess() {
+
+        stubGetAirportsUseCase()
+
         val airports = listOf(AirportFactory.makeAirportEntity())
 
         selectionViewModel.fetchAirports(DataFactory.randomString(), DataFactory.randomInt(), DataFactory.randomInt())
 
-        verify(mockGetAirport).execute(capture(airportListCaptor), any())
+        verify(mockGetAirport).execute(any(), capture(airportListCaptor))
+
         airportListCaptor.value.onNext(airports)
 
         Assert.assertEquals(ResourceState.SUCCESS, selectionViewModel.getAirportsLiveData().value?.status)
@@ -55,11 +69,15 @@ class SelectionViewModelTest {
 
     @Test
     fun testFetchAirportsReturnsData() {
+
+        stubGetAirportsUseCase()
+
         val airports = listOf(AirportFactory.makeAirportEntity())
 
         selectionViewModel.fetchAirports(DataFactory.randomString(), DataFactory.randomInt(), DataFactory.randomInt())
 
-        verify(mockGetAirport).execute(capture(airportListCaptor), any())
+        verify(mockGetAirport).execute(any(), capture(airportListCaptor))
+
         airportListCaptor.value.onNext(airports)
 
 
@@ -69,9 +87,12 @@ class SelectionViewModelTest {
     @Test
     fun testFetchAirportsReturnsError() {
 
+        stubGetAirportsUseCase()
+
         selectionViewModel.fetchAirports(DataFactory.randomString(), DataFactory.randomInt(), DataFactory.randomInt())
 
-        verify(mockGetAirport).execute(capture(airportListCaptor), any())
+        verify(mockGetAirport).execute(any(), capture(airportListCaptor))
+
         airportListCaptor.value.onError(RuntimeException())
 
         Assert.assertEquals(ResourceState.ERROR, selectionViewModel.getAirportsLiveData().value?.status)
@@ -79,12 +100,22 @@ class SelectionViewModelTest {
 
     @Test
     fun testFetchAirportsReturnsMessageForError() {
+
+        stubGetAirportsUseCase()
+
         val errorMessage = DataFactory.randomString()
         selectionViewModel.fetchAirports(DataFactory.randomString(), DataFactory.randomInt(), DataFactory.randomInt())
 
-        verify(mockGetAirport).execute(capture(airportListCaptor), any())
+        verify(mockGetAirport).execute(any(), capture(airportListCaptor))
+
         airportListCaptor.value.onError(RuntimeException(errorMessage))
 
         Assert.assertEquals(errorMessage, selectionViewModel.getAirportsLiveData().value?.message)
     }
+
+    private fun stubGetAirportsUseCase() {
+        `when`(mockGetAirport.execute(any(), any())).thenReturn(selectionViewModel.AirportsSubscriber())
+    }
+
+
 }

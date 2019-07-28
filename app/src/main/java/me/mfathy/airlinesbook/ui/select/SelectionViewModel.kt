@@ -2,10 +2,10 @@ package me.mfathy.airlinesbook.ui.select
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import io.reactivex.observers.DisposableObserver
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.domain.interactor.airports.GetAirports
+import me.mfathy.airlinesbook.ui.base.BaseViewModel
 import me.mfathy.airlinesbook.ui.state.Resource
 import me.mfathy.airlinesbook.ui.state.ResourceState
 import javax.inject.Inject
@@ -18,14 +18,8 @@ import javax.inject.Inject
  */
 open class SelectionViewModel @Inject internal constructor(
         private val getAirports: GetAirports
-) : ViewModel() {
+) : BaseViewModel() {
     private val airportsLiveData: MutableLiveData<Resource<List<AirportEntity>>> = MutableLiveData()
-
-
-    override fun onCleared() {
-        getAirports.dispose()
-        super.onCleared()
-    }
 
     fun getAirportsLiveData(): LiveData<Resource<List<AirportEntity>>> {
         return airportsLiveData
@@ -33,14 +27,13 @@ open class SelectionViewModel @Inject internal constructor(
 
     fun fetchAirports(lang: String, limit: Int, offset: Int) {
         airportsLiveData.postValue(Resource(ResourceState.LOADING, null, null, null))
-        getAirports.execute(
-                AirportsSubscriber(),
-                GetAirports.Params.forGetAirports(
-                        lang,
-                        limit,
-                        offset
-                )
+        val params = GetAirports.Params(
+                lang,
+                limit,
+                offset
         )
+        val airportsSubscriber = getAirports.execute(params, AirportsSubscriber())
+        addDisposables(airportsSubscriber)
 
     }
 
