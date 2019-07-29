@@ -21,4 +21,5 @@
     <string name="exception_message_no_flights">No flight schedules!</string>
     <string name="loading">Loading…</string>
     <string name="exception_message_no_schedules">No flight schedules!</string>
+    <string name="no_airports">No airports</string>
 </resources>

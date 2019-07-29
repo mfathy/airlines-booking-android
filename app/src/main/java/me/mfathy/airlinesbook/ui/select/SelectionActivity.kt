@@ -81,9 +81,10 @@ class SelectionActivity : AppCompatActivity() {
                     }
                 })
 
+        val lang = Locale.getDefault().language
         //  Subscribe to pagination to receive updates
         selectionViewModel.startPagination()
-        selectionViewModel.getPaginator().onNext(Pair(0, "en"))
+        selectionViewModel.getPaginator().onNext(Pair(0, lang))
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -103,7 +104,7 @@ class SelectionActivity : AppCompatActivity() {
             resource.status == ResourceState.SUCCESS -> resource.data?.let { airports ->
                 requestOnWay = false
                 if (scrollListener.getCurrentPageNumber() == 0 && airports.isEmpty()) {
-                    txtVError.text = "No airports"
+                    txtVError.text = getString(R.string.no_airports)
 
                     //  UI
                     rVAirports.visibility = View.INVISIBLE

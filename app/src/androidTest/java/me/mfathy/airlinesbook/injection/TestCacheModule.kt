@@ -1,11 +1,11 @@
 package me.mfathy.airlinesbook.injection
 
 import android.app.Application
-import com.nhaarman.mockito_kotlin.mock
 import dagger.Module
 import dagger.Provides
 import me.mfathy.airlinesbook.data.store.AirportsDataStore
 import me.mfathy.airlinesbook.data.store.local.db.AirportsDatabase
+import org.mockito.Mockito.mock
 
 @Module
 object TestCacheModule {
@@ -19,7 +19,7 @@ object TestCacheModule {
     @Provides
     @JvmStatic
     fun provideCacheStore(): AirportsDataStore {
-        return mock()
+        return mock(AirportsDataStore::class.java)
     }
 
 }

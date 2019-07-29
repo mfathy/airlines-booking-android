@@ -164,8 +164,6 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-android:${mockitoAndroidVersion}"
     androidTestImplementation "junit:junit:${rootProject.ext.jUnitVersion}"
 
-    debugImplementation "com.jakewharton.espresso:okhttp3-idling-resource:${rootProject.ext.okhttpIdlingVersion}"
-
     androidTestImplementation "com.squareup.okhttp3:mockwebserver:${rootProject.ext.mockWebServerVersion}"
 
     // Core library
@@ -187,8 +185,6 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-intents:${rootProject.ext.espressoVersion}"
     androidTestImplementation "androidx.test.espresso:espresso-accessibility:${rootProject.ext.espressoVersion}"
     androidTestImplementation "androidx.test.espresso:espresso-web:${rootProject.ext.espressoVersion}"
-    androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:${rootProject.ext.espressoVersion}"
-    androidTestImplementation "androidx.test.espresso:espresso-idling-resource:${rootProject.ext.espressoVersion}"
 
     kaptTest "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
     kaptAndroidTest "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"

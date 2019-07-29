@@ -9,11 +9,10 @@ import androidx.test.filters.LargeTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import androidx.test.runner.AndroidJUnit4
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.whenever
 import io.reactivex.Flowable
 import io.reactivex.Single
 import me.mfathy.airlinesbook.R
+import me.mfathy.airlinesbook.any
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 import me.mfathy.airlinesbook.factory.AirportTestFactory
@@ -23,6 +22,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mockito
 
 /**
  * Espresso ui test to ensure that SearchFlightsActivity is working right.
@@ -50,8 +52,6 @@ class SearchFlightsActivityTest {
     @Test
     fun searchFlightsActivityTest() {
         mActivityTestRule.launchActivity(null)
-
-        Thread.sleep(3000)
 
         val textView = onView(
                 allOf(withId(R.id.originAirportCode), withText("AAR"), isDisplayed()))
@@ -86,12 +86,13 @@ class SearchFlightsActivityTest {
     }
 
     private fun stubAirportsRepositoryGetAccessToken(observable: Single<AccessTokenEntity>) {
-        whenever(TestApplication.appComponent().airportsRepository().getAccessToken(any(), any(), any()))
+        Mockito.`when`(TestApplication.appComponent().airportsRepository().getAccessToken(any(), any(), any()))
                 .thenReturn(observable)
     }
 
     private fun stubAirportsRepositorySearchResult(observable: Flowable<List<ScheduleEntity>>) {
-        whenever(TestApplication.appComponent().airportsRepository().getFlightSchedules(any(), any(), any(), any(), any()))
+        Mockito.`when`(TestApplication.appComponent().airportsRepository()
+                .getFlightSchedules(anyString(), anyString(), anyString(), anyInt(), anyInt()))
                 .thenReturn(observable)
     }
 }
