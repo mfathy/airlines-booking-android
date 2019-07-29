@@ -25,7 +25,6 @@ data class AirportEntity(val name: String = "",
                          val countryCode: String = "",
                          val locationType: String = "") : Parcelable {
     constructor(parcel: Parcel) : this(
-            //  Todo to be removed
             parcel.readString()!!,
             parcel.readString()!!,
             parcel.readDouble(),
