@@ -23,8 +23,9 @@ These instructions will get you a copy of the project up and running on your loc
     ```
     git clone https://github.com/mfathy/AirlinesBook.git
     ```
-1.  Open **Android studio**, Select File | Open... and point to the the project, wait until the project syncs and builds successfully.
-1.  Run the project using Android studio.
+2.  Open **Android studio**, Select File | Open... and point to the the project, wait until the project syncs and builds successfully.
+3.  Get access to lufthansa api from this guide >> https://developer.lufthansa.com/docs/read/api_basics/Getting_Started
+3.  Run the project using Android studio.
 
 ## DISCUSSION 
 
