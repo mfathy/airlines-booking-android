@@ -17,7 +17,7 @@ class ImmediateSchedulerRuleUnitTests : TestRule {
                 super.scheduleDirect(run, 0, unit)
 
         override fun createWorker() =
-                ExecutorScheduler.ExecutorWorker(Executor { it.run() })
+                ExecutorScheduler.ExecutorWorker(Executor { it.run() }, false)
     }
 
     override fun apply(base: Statement, d: Description) = object : Statement() {

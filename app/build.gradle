@@ -1,7 +1,7 @@
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
+apply plugin: 'kotlin-android-extensions'
 
 def keystorePropertiesFile = rootProject.file("airlines.properties")
 def keystoreProperties = new Properties()
@@ -157,7 +157,7 @@ dependencies {
     testImplementation "org.assertj:assertj-core:${rootProject.ext.assertJVersion}"
 
     // room and arch testing
-    testImplementation "androidx.arch.core:core-testing:${rootProject.ext.lifecycle_version}"
+    testImplementation "androidx.arch.core:core-testing:${rootProject.ext.coreTestingVersion}"
     testImplementation "androidx.room:room-testing:${rootProject.ext.roomVersion}"
 
     //  android testing

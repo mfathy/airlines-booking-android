@@ -33,7 +33,7 @@ object ErrorMessageFactory {
                 if (exception.code() == 404) {
                     message = context.resources.getString(R.string.exception_message_no_schedules)
                 } else {
-                    exception.response().errorBody()?.string()?.let {
+                    exception.response()?.errorBody()?.string()?.let {
                         //  Just in case parsing goes wrong or any other exception.
                         message = try {
                             val errorResponse = Gson().fromJson(it, ErrorResponse::class.java)
