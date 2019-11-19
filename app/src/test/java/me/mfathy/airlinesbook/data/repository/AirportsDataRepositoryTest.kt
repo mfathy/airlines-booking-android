@@ -22,17 +22,17 @@ import org.mockito.junit.MockitoJUnitRunner
  * Created by Mohammed Fathy on 17/12/2018.
  * dev.mfathy@gmail.com
  *
- * Unit test for AirportsRepositoryImpl
+ * Unit test for AirportsDataRepository
  */
 @RunWith(MockitoJUnitRunner::class)
-class AirportsRepositoryImplTest {
+class AirportsDataRepositoryTest {
 
     private val mockStore = mock(AirportsDataStore::class.java)
     private val mockCacheStore = mock(AirportsCache::class.java)
     private val mockRemoteStore = mock(AirportsRemote::class.java)
     private val mockFactory = mock(AirportsDataStoreFactory::class.java)
     private val mockPreferenceHelper = mock(PreferenceHelper::class.java)
-    private val repository = AirportsRepositoryImpl(mockFactory, mockPreferenceHelper)
+    private val repository = AirportsDataRepository(mockFactory, mockPreferenceHelper)
 
     @Before
     fun setup() {

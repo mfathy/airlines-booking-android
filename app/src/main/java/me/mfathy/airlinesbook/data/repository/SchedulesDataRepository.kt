@@ -1,7 +1,6 @@
 package me.mfathy.airlinesbook.data.repository
 
 import io.reactivex.Flowable
-import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 import me.mfathy.airlinesbook.data.store.AirportsDataStoreFactory
 import javax.inject.Inject
@@ -14,7 +13,7 @@ class SchedulesDataRepository @Inject constructor(
                 .getFlightSchedules(origin, destination, flightDate, limit, offset)
     }
 
-    override fun getFlightScheduleDetails(airportCodes: Array<String>,
+    /*override fun getFlightScheduleDetails(airportCodes: Array<String>,
                                           lang: String,
                                           limit: Int,
                                           offset: Int): Flowable<List<AirportEntity>> {
@@ -22,5 +21,5 @@ class SchedulesDataRepository @Inject constructor(
                 .flatMap { airportCode -> getAirport(airportCode, lang, limit, offset).toFlowable() }
                 .toList()
                 .toFlowable()
-    }
+    }*/
 }

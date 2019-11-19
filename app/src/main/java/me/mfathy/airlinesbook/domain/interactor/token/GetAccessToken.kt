@@ -2,7 +2,7 @@ package me.mfathy.airlinesbook.domain.interactor.token
 
 import io.reactivex.Observable
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
-import me.mfathy.airlinesbook.data.repository.AirportsRepository
+import me.mfathy.airlinesbook.data.repository.AuthRepository
 import me.mfathy.airlinesbook.domain.interactor.base.ObservableUseCase
 import me.mfathy.airlinesbook.extensions.rx.subscribeAndObserve
 import javax.inject.Inject
@@ -14,10 +14,10 @@ import javax.inject.Inject
  * GetAccessToken is a use case to get app access token.
  */
 open class GetAccessToken @Inject constructor(
-        private val airportsRepository: AirportsRepository
+        private val authRepository: AuthRepository
 ) : ObservableUseCase<AccessTokenEntity, GetAccessToken.Params>() {
     override fun buildUseCaseObservable(params: Params): Observable<AccessTokenEntity> {
-        return airportsRepository.getAccessToken(
+        return authRepository.getAccessToken(
                 params.clientId,
                 params.clientSecret,
                 params.grantType

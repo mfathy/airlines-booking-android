@@ -24,17 +24,4 @@ interface SchedulesRepository {
                            flightDate: String,
                            limit: Int,
                            offset: Int): Flowable<List<ScheduleEntity>>
-
-    /**
-     * Returns a flowable which emits a list of flight schedules details.
-     * @param airportCodes a list of airport codes to get its details.
-     * @param lang the language the user would like to receive his response in.
-     * @param limit the number of airports >> this should be from 1 to 100.
-     * @param offset the paging number.
-     */
-    fun getFlightScheduleDetails(airportCodes: Array<String>,
-                                 lang: String,
-                                 limit: Int,
-                                 offset: Int): Flowable<List<AirportEntity>>
-
 }

@@ -15,7 +15,7 @@ import javax.inject.Inject
 /**
  * AirportsRepository implementation
  */
-class AirportsRepositoryImpl @Inject constructor(
+class AirportsDataRepository @Inject constructor(
         private val factory: AirportsDataStoreFactory
 ) : AirportsRepository {
 
