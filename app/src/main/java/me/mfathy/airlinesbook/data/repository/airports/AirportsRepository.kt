@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.data.repository
+package me.mfathy.airlinesbook.data.repository.airports
 
 import io.reactivex.Completable
 import io.reactivex.Flowable

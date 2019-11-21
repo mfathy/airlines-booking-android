@@ -1,14 +1,10 @@
-package me.mfathy.airlinesbook.data.repository
+package me.mfathy.airlinesbook.data.repository.airports
 
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
-import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.AirportEntity
-import me.mfathy.airlinesbook.data.model.ScheduleEntity
-import me.mfathy.airlinesbook.data.preference.PreferenceHelper
 import me.mfathy.airlinesbook.data.store.AirportsDataStoreFactory
 import javax.inject.Inject
 

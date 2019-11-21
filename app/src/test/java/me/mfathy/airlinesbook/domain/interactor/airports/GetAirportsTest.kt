@@ -3,7 +3,7 @@ package me.mfathy.airlinesbook.domain.interactor.airports
 import io.reactivex.Observable
 import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
 import me.mfathy.airlinesbook.data.model.AirportEntity
-import me.mfathy.airlinesbook.data.repository.AirportsRepository
+import me.mfathy.airlinesbook.data.repository.airports.AirportsRepository
 import me.mfathy.airlinesbook.factory.AirportFactory
 import me.mfathy.airlinesbook.factory.AirportFactory.makeGetAirportParams
 import org.junit.Before

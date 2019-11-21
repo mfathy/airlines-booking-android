@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.data.repository
+package me.mfathy.airlinesbook.data.repository.auth
 
 import io.reactivex.Single
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity

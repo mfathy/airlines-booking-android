@@ -2,7 +2,7 @@ package me.mfathy.airlinesbook.domain.interactor.airports
 
 import io.reactivex.Completable
 import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
-import me.mfathy.airlinesbook.data.repository.AirportsRepository
+import me.mfathy.airlinesbook.data.repository.airports.AirportsRepository
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.data.repository
+package me.mfathy.airlinesbook.data.repository.schedules
 
 import io.reactivex.Flowable
 import me.mfathy.airlinesbook.data.model.AirportEntity

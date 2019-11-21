@@ -2,7 +2,7 @@ package me.mfathy.airlinesbook.domain.interactor.airports
 
 import io.reactivex.Observable
 import me.mfathy.airlinesbook.data.model.AirportEntity
-import me.mfathy.airlinesbook.data.repository.AirportsRepository
+import me.mfathy.airlinesbook.data.repository.airports.AirportsRepository
 import me.mfathy.airlinesbook.domain.interactor.base.ObservableUseCase
 import javax.inject.Inject
 

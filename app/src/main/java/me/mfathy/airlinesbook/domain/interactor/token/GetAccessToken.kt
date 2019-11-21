@@ -2,7 +2,7 @@ package me.mfathy.airlinesbook.domain.interactor.token
 
 import io.reactivex.Observable
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
-import me.mfathy.airlinesbook.data.repository.AuthRepository
+import me.mfathy.airlinesbook.data.repository.auth.AuthRepository
 import me.mfathy.airlinesbook.domain.interactor.base.ObservableUseCase
 import me.mfathy.airlinesbook.extensions.rx.subscribeAndObserve
 import javax.inject.Inject

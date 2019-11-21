@@ -4,7 +4,7 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
-import me.mfathy.airlinesbook.data.repository.AirportsRepository
+import me.mfathy.airlinesbook.data.repository.airports.AirportsRepository
 import me.mfathy.airlinesbook.injection.modules.UiModule
 import me.mfathy.airlinesbook.injection.modules.ViewModelsModule
 import me.mfathy.airlinesbook.test.TestApplication

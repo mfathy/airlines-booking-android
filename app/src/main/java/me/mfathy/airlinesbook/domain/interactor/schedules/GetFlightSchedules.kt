@@ -2,7 +2,7 @@ package me.mfathy.airlinesbook.domain.interactor.schedules
 
 import io.reactivex.Flowable
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
-import me.mfathy.airlinesbook.data.repository.AirportsRepository
+import me.mfathy.airlinesbook.data.repository.schedules.SchedulesRepository
 import me.mfathy.airlinesbook.domain.interactor.base.FlowableUseCase
 import me.mfathy.airlinesbook.extensions.rx.subscribeAndObserve
 import javax.inject.Inject
@@ -15,7 +15,7 @@ import javax.inject.Inject
  */
 
 open class GetFlightSchedules @Inject constructor(
-        private val dataRepository: AirportsRepository)
+        private val dataRepository: SchedulesRepository)
     : FlowableUseCase<List<ScheduleEntity>, GetFlightSchedules.Params>() {
     override fun buildUseCaseObservable(params: Params): Flowable<List<ScheduleEntity>> {
         return dataRepository.getFlightSchedules(params.origin,

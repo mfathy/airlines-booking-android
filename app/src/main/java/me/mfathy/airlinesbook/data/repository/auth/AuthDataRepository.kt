@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.data.repository
+package me.mfathy.airlinesbook.data.repository.auth
 
 import io.reactivex.Single
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
@@ -6,7 +6,7 @@ import me.mfathy.airlinesbook.data.preference.PreferenceHelper
 import me.mfathy.airlinesbook.data.store.AirportsDataStoreFactory
 import javax.inject.Inject
 
-class AuthDataRespository @Inject constructor(
+class AuthDataRepository @Inject constructor(
         private val factory: AirportsDataStoreFactory,
         private val preferenceHelper: PreferenceHelper
 ): AuthRepository {
