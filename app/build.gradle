@@ -188,5 +188,8 @@ dependencies {
     kaptTest "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
     kaptAndroidTest "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
 
+    //  Local
+    implementation project(path: ':data')
+
 
 }

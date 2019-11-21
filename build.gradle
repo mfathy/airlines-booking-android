@@ -37,13 +37,13 @@ ext {
     kotlinVersion = '1.3.10'
 
     //Libraries
-    androidXVersion = '1.1.0-alpha09'
+    androidXVersion = '1.2.0-alpha02'
 
-    vectorDrawableVersion = '1.0.0'
-    recyclerviewVersion = '1.1.0-beta03'
+    vectorDrawableVersion = '1.1.0'
+    recyclerviewVersion = '1.1.0'
     cardviewVersion = '1.0.0'
 
-    constraintlayoutVersion = '2.0.0-beta2'
+    constraintlayoutVersion = '2.0.0-beta3'
 
     daggerVersion = '2.24'
 
