@@ -89,6 +89,7 @@ dependencies {
 
     implementation "com.google.android.material:material:${rootProject.ext.androidXVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
+    implementation "androidx.core:core-ktx:${rootProject.ext.ktxVersion}"
 
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayoutVersion}"
 
