@@ -15,7 +15,7 @@ import dagger.android.AndroidInjection
 import kotlinx.android.synthetic.main.activity_selection.*
 import me.mfathy.airlinesbook.R
 import me.mfathy.airlinesbook.data.model.AirportEntity
-import me.mfathy.airlinesbook.exception.ErrorMessageFactory
+import me.mfathy.airlinesbook.exceptions.ErrorMessageFactory
 import me.mfathy.airlinesbook.injection.ViewModelFactory
 import me.mfathy.airlinesbook.ui.base.widgets.AbstractPagination
 import me.mfathy.airlinesbook.ui.state.Resource

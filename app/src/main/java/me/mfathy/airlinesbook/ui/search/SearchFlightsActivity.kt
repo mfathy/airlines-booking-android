@@ -23,7 +23,7 @@ import me.mfathy.airlinesbook.R
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
-import me.mfathy.airlinesbook.exception.ErrorMessageFactory
+import me.mfathy.airlinesbook.exceptions.ErrorMessageFactory
 import me.mfathy.airlinesbook.injection.ViewModelFactory
 import me.mfathy.airlinesbook.ui.details.FlightDetailsActivity
 import me.mfathy.airlinesbook.ui.details.FlightDetailsActivity.Companion.SELECTED_SCHEDULE
