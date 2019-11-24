@@ -88,7 +88,7 @@ dependencies {
     implementation "androidx.cardview:cardview:${rootProject.ext.cardviewVersion}"
 
     implementation "com.google.android.material:material:${rootProject.ext.androidXVersion}"
-    implementation "androidx.appcompat:appcompat:${rootProject.ext.androidXVersion}"
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
 
     implementation "androidx.constraintlayout:constraintlayout:${rootProject.ext.constraintlayoutVersion}"
 
@@ -117,9 +117,9 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxkotlin:${rootProject.ext.rxKotlinVersion}"
 
     // ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.ext.lifecycle_version}"
-    implementation "androidx.lifecycle:lifecycle-runtime:${rootProject.ext.lifecycle_version}"
-    kapt "androidx.lifecycle:lifecycle-compiler:${rootProject.ext.lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${rootProject.ext.lifecycleVersion}"
+    implementation "androidx.lifecycle:lifecycle-runtime:${rootProject.ext.lifecycleVersion}"
+    kapt "androidx.lifecycle:lifecycle-compiler:${rootProject.ext.lifecycleVersion}"
 
     // room
     implementation "androidx.room:room-runtime:${rootProject.ext.roomVersion}"
