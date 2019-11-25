@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
+
 android {
     compileSdkVersion rootProject.ext.androidCompileSdkVersion
     defaultConfig {
@@ -23,6 +24,14 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "androidx.core:core-ktx:${rootProject.ext.ktxVersion}"
     implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
+
+    // dagger
+    implementation "com.google.dagger:dagger-android-support:${rootProject.ext.daggerVersion}"
+    implementation "com.google.dagger:dagger-android:${rootProject.ext.daggerVersion}"
+    implementation "com.google.dagger:dagger:${rootProject.ext.daggerVersion}"
+
+    kapt "com.google.dagger:dagger-android-processor:${rootProject.ext.daggerVersion}"
+    kapt "com.google.dagger:dagger-compiler:${rootProject.ext.daggerVersion}"
 
     // Retrofit
     implementation "com.squareup.retrofit2:adapter-rxjava2:${rootProject.ext.retrofitVersion}"
@@ -62,5 +71,7 @@ dependencies {
     // room and arch testing
     testImplementation "androidx.arch.core:core-testing:${rootProject.ext.coreTestingVersion}"
     testImplementation "androidx.room:room-testing:${rootProject.ext.roomVersion}"
+
+    implementation project(path: ':test-tools')
 
 }

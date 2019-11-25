@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook
+package me.mfathy.test.tools
 
 import io.reactivex.Scheduler
 import io.reactivex.android.plugins.RxAndroidPlugins

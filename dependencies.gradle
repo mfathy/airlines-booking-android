@@ -6,7 +6,7 @@ ext {
     androidTargetSdkVersion = 28
     androidCompileSdkVersion = 28
     kotlinVersion = '1.3.10'
-    ktxVersion = '1.0.2'
+    ktxVersion = '1.1.0'
 
     //Libraries
     androidXVersion = '1.2.0-alpha02'
@@ -36,7 +36,7 @@ ext {
 
     timberVersion = '4.5.1'
 
-    glideVersion = '4.8.0'
+    glideVersion = '4.9.0'
 
     alerterVersion = '4.0.0'
 

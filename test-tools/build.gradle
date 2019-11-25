@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+android {
+    compileSdkVersion rootProject.ext.androidCompileSdkVersion
+    defaultConfig {
+        minSdkVersion rootProject.ext.androidMinSdkVersion
+        targetSdkVersion rootProject.ext.androidTargetSdkVersion
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "androidx.appcompat:appcompat:${rootProject.ext.appcompatVersion}"
+    implementation "androidx.core:core-ktx:${rootProject.ext.ktxVersion}"
+
+    // RxJava || RxKotlin || RxAndroid
+    implementation "io.reactivex.rxjava2:rxandroid:${rootProject.ext.rxAndroidVersion}"
+    implementation "io.reactivex.rxjava2:rxkotlin:${rootProject.ext.rxKotlinVersion}"
+
+    // Junit
+    implementation "org.jetbrains.kotlin:kotlin-test-junit:${rootProject.ext.kotlinVersion}"
+    implementation "junit:junit:${rootProject.ext.jUnitVersion}"
+
+    // mocking
+    implementation "org.mockito:mockito-core:${rootProject.ext.mockitoVersion}"
+    implementation "org.mockito:mockito-inline:${rootProject.ext.mockitoInlineVersion}"
+
+    // assertj
+    implementation "org.assertj:assertj-core:${rootProject.ext.assertJVersion}"
+}

@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook
+package me.mfathy.test.tools
 
 import org.mockito.ArgumentCaptor
 import org.mockito.Mockito
