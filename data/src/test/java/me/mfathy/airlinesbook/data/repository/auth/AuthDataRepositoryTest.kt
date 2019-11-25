@@ -2,14 +2,13 @@ package me.mfathy.airlinesbook.data.repository.auth
 
 import io.reactivex.Completable
 import io.reactivex.Single
-import me.mfathy.airlinesbook.BuildConfig
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.preference.PreferenceHelper
-import me.mfathy.airlinesbook.data.store.AirportsDataStore
 import me.mfathy.airlinesbook.data.store.AirportsDataStoreFactory
 import me.mfathy.airlinesbook.data.store.local.AirportsCache
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemote
 import me.mfathy.airlinesbook.factory.AirportFactory
+import me.mfathy.airlinesbook.factory.DataFactory
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -38,29 +37,29 @@ class AuthDataRepositoryTest {
 
     @Test
     fun testGetAccessTokenCompletes() {
-        val entity = AccessTokenEntity(BuildConfig.CLIENT_ID)
+        val entity = AccessTokenEntity(DataFactory.randomString())
         stubPreferenceHelper(entity)
         stubGetAccessTokenEntity(Single.just(entity))
         stubSetLastCacheTime(Completable.complete())
         stubFactoryGetRemoteDataStore()
         val testObserver = repository.getAccessToken(
-                BuildConfig.CLIENT_ID,
-                BuildConfig.CLIENT_SECRET,
-                BuildConfig.GRANT_TYPE).test()
+                DataFactory.randomString(),
+                DataFactory.randomString(),
+                DataFactory.randomString()).test()
         testObserver.assertComplete()
     }
 
     @Test
     fun testGetAccessTokenReturnsData() {
-        val entity = AccessTokenEntity(BuildConfig.CLIENT_ID)
+        val entity = AccessTokenEntity(DataFactory.randomString())
         stubPreferenceHelper(entity)
         stubGetAccessTokenEntity(Single.just(entity))
         stubSetLastCacheTime(Completable.complete())
         stubFactoryGetRemoteDataStore()
         val testObserver = repository.getAccessToken(
-                BuildConfig.CLIENT_ID,
-                BuildConfig.CLIENT_SECRET,
-                BuildConfig.GRANT_TYPE).test()
+                DataFactory.randomString(),
+                DataFactory.randomString(),
+                DataFactory.randomString()).test()
         testObserver.assertValue(entity)
     }
 
@@ -69,9 +68,9 @@ class AuthDataRepositoryTest {
         val entity = AirportFactory.makeAccessTokenEntity()
         stubPreferenceHelper(entity)
         val testObserver = repository.getAccessToken(
-                BuildConfig.CLIENT_ID,
-                BuildConfig.CLIENT_SECRET,
-                BuildConfig.GRANT_TYPE).test()
+                DataFactory.randomString(),
+                DataFactory.randomString(),
+                DataFactory.randomString()).test()
         testObserver.assertValue(entity)
     }
 

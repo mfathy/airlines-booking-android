@@ -3,14 +3,10 @@ package me.mfathy.airlinesbook.data.repository.airports
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import me.mfathy.airlinesbook.BuildConfig
-import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.AirportEntity
-import me.mfathy.airlinesbook.data.preference.PreferenceHelper
 import me.mfathy.airlinesbook.data.store.AirportsDataStore
 import me.mfathy.airlinesbook.data.store.AirportsDataStoreFactory
 import me.mfathy.airlinesbook.data.store.local.AirportsCache
-import me.mfathy.airlinesbook.data.store.remote.AirportsRemote
 import me.mfathy.airlinesbook.factory.AirportFactory
 import org.junit.Before
 import org.junit.Test
@@ -110,7 +106,7 @@ class AirportsDataRepositoryTest {
     }
 
     private fun stubSaveAirport(completable: Completable) {
-        `when`(mockCacheStore.saveAirport(me.mfathy.airlinesbook.any())).thenReturn(completable)
+        `when`(mockCacheStore.saveAirport(me.mfathy.test.tools.any())).thenReturn(completable)
     }
 
     private fun stubAreAirportsCached(single: Single<Boolean>?) {

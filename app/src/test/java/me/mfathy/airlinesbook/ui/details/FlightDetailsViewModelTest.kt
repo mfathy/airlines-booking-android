@@ -2,10 +2,10 @@ package me.mfathy.airlinesbook.ui.details
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.reactivex.subscribers.DisposableSubscriber
-import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
-import me.mfathy.airlinesbook.any
-import me.mfathy.airlinesbook.argumentCaptor
-import me.mfathy.airlinesbook.capture
+import me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests
+import me.mfathy.test.tools.any
+import me.mfathy.test.tools.argumentCaptor
+import me.mfathy.test.tools.capture
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.domain.interactor.schedules.GetScheduleFlightDetails
 import me.mfathy.airlinesbook.factory.AirportFactory
@@ -32,7 +32,7 @@ class FlightDetailsViewModelTest {
 
     @JvmField
     @Rule
-    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+    val immediateSchedulerRule = me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests()
 
     @Rule
     @JvmField
@@ -43,7 +43,7 @@ class FlightDetailsViewModelTest {
     private var flightDetailsViewModel = FlightDetailsViewModel(mockGetScheduleFlightDetails)
 
     @Captor
-    val airportListCaptor = argumentCaptor<DisposableSubscriber<List<AirportEntity>>>()
+    val airportListCaptor = me.mfathy.test.tools.argumentCaptor<DisposableSubscriber<List<AirportEntity>>>()
 
     @Before
     fun setUp() {
@@ -56,7 +56,7 @@ class FlightDetailsViewModelTest {
 
         flightDetailsViewModel.fetchAirports(listOf(), "en", 1, 1)
 
-        verify(mockGetScheduleFlightDetails, times(1)).execute(any(), any())
+        verify(mockGetScheduleFlightDetails, times(1)).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.any())
     }
 
     @Test
@@ -68,7 +68,7 @@ class FlightDetailsViewModelTest {
 
         flightDetailsViewModel.fetchAirports(listOf(), "", 1, 1)
 
-        verify(mockGetScheduleFlightDetails).execute(any(), capture(airportListCaptor))
+        verify(mockGetScheduleFlightDetails).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(airportListCaptor))
         airportListCaptor.value.onNext(airports)
 
         assertEquals(ResourceState.SUCCESS, flightDetailsViewModel.getAirportsLiveData().value?.status)
@@ -83,7 +83,7 @@ class FlightDetailsViewModelTest {
 
         flightDetailsViewModel.fetchAirports(listOf(), "", 1, 1)
 
-        verify(mockGetScheduleFlightDetails).execute(any(), capture(airportListCaptor))
+        verify(mockGetScheduleFlightDetails).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(airportListCaptor))
 
         airportListCaptor.value.onNext(airports)
 
@@ -97,7 +97,7 @@ class FlightDetailsViewModelTest {
 
         flightDetailsViewModel.fetchAirports(listOf(), "", 1, 1)
 
-        verify(mockGetScheduleFlightDetails).execute(any(), capture(airportListCaptor))
+        verify(mockGetScheduleFlightDetails).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(airportListCaptor))
 
         airportListCaptor.value.onError(RuntimeException())
 
@@ -112,7 +112,7 @@ class FlightDetailsViewModelTest {
         val errorMessage = DataFactory.randomString()
         flightDetailsViewModel.fetchAirports(listOf(), "", 1, 1)
 
-        verify(mockGetScheduleFlightDetails).execute(any(), capture(airportListCaptor))
+        verify(mockGetScheduleFlightDetails).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(airportListCaptor))
 
         airportListCaptor.value.onError(RuntimeException(errorMessage))
 
@@ -120,6 +120,6 @@ class FlightDetailsViewModelTest {
     }
 
     private fun stubGetFlightDetailsUseCase() {
-        `when`(mockGetScheduleFlightDetails.execute(any(), any())).thenReturn(flightDetailsViewModel.AirportsSubscriber())
+        `when`(mockGetScheduleFlightDetails.execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.any())).thenReturn(flightDetailsViewModel.AirportsSubscriber())
     }
 }

@@ -3,10 +3,10 @@ package me.mfathy.airlinesbook.ui.search
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.subscribers.DisposableSubscriber
-import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
-import me.mfathy.airlinesbook.any
-import me.mfathy.airlinesbook.argumentCaptor
-import me.mfathy.airlinesbook.capture
+import me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests
+import me.mfathy.test.tools.any
+import me.mfathy.test.tools.argumentCaptor
+import me.mfathy.test.tools.capture
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 import me.mfathy.airlinesbook.domain.interactor.schedules.GetFlightSchedules
@@ -35,17 +35,17 @@ class SearchViewModelTest {
 
     @JvmField
     @Rule
-    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+    val immediateSchedulerRule = me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests()
 
     private val mockGetFlightSchedules = mock(GetFlightSchedules::class.java)
     private val mockGetAccessToken = mock(GetAccessToken::class.java)
     private var searchViewModel = SearchViewModel(mockGetFlightSchedules, mockGetAccessToken)
 
     @Captor
-    val airportListCaptor = argumentCaptor<DisposableSubscriber<List<ScheduleEntity>>>()
+    val airportListCaptor = me.mfathy.test.tools.argumentCaptor<DisposableSubscriber<List<ScheduleEntity>>>()
 
     @Captor
-    val captorAccessToken = argumentCaptor<DisposableObserver<AccessTokenEntity>>()
+    val captorAccessToken = me.mfathy.test.tools.argumentCaptor<DisposableObserver<AccessTokenEntity>>()
 
     @Test
     fun testFetchFlightSchedulesExecutesUseCase() {
@@ -54,7 +54,7 @@ class SearchViewModelTest {
 
         searchViewModel.fetchFlightSchedules("CAI", "RUH", "", 1, 1)
 
-        verify(mockGetFlightSchedules, times(1)).execute(any(), capture(airportListCaptor))
+        verify(mockGetFlightSchedules, times(1)).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(airportListCaptor))
     }
 
     @Test
@@ -65,7 +65,7 @@ class SearchViewModelTest {
 
         searchViewModel.fetchFlightSchedules("CAI", "RUH", "", 1, 1)
 
-        verify(mockGetFlightSchedules).execute(any(), capture(airportListCaptor))
+        verify(mockGetFlightSchedules).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(airportListCaptor))
 
         airportListCaptor.value.onNext(schedules)
 
@@ -80,7 +80,7 @@ class SearchViewModelTest {
 
         searchViewModel.fetchFlightSchedules("CAI", "RUH", "", 1, 1)
 
-        verify(mockGetFlightSchedules).execute(any(), capture(airportListCaptor))
+        verify(mockGetFlightSchedules).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(airportListCaptor))
 
         airportListCaptor.value.onNext(schedules)
 
@@ -93,7 +93,7 @@ class SearchViewModelTest {
 
         searchViewModel.fetchFlightSchedules("CAI", "RUH", "", 1, 1)
 
-        verify(mockGetFlightSchedules).execute(any(), capture(airportListCaptor))
+        verify(mockGetFlightSchedules).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(airportListCaptor))
 
         airportListCaptor.value.onError(RuntimeException())
 
@@ -107,7 +107,7 @@ class SearchViewModelTest {
         val errorMessage = DataFactory.randomString()
         searchViewModel.fetchFlightSchedules("CAI", "RUH", "", 1, 1)
 
-        verify(mockGetFlightSchedules).execute(any(), capture(airportListCaptor))
+        verify(mockGetFlightSchedules).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(airportListCaptor))
 
         airportListCaptor.value.onError(RuntimeException(errorMessage))
 
@@ -120,7 +120,7 @@ class SearchViewModelTest {
 
         searchViewModel.authenticateApp(DataFactory.randomString(), DataFactory.randomString(), DataFactory.randomString())
 
-        verify(mockGetAccessToken, times(1)).execute(any(), any())
+        verify(mockGetAccessToken, times(1)).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.any())
     }
 
     @Test
@@ -131,7 +131,7 @@ class SearchViewModelTest {
 
         searchViewModel.authenticateApp(DataFactory.randomString(), DataFactory.randomString(), DataFactory.randomString())
 
-        verify(mockGetAccessToken).execute(any(), capture(captorAccessToken))
+        verify(mockGetAccessToken).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(captorAccessToken))
 
 
         captorAccessToken.value.onNext(token)
@@ -148,7 +148,7 @@ class SearchViewModelTest {
 
         searchViewModel.authenticateApp(DataFactory.randomString(), DataFactory.randomString(), DataFactory.randomString())
 
-        verify(mockGetAccessToken).execute(any(), capture(captorAccessToken))
+        verify(mockGetAccessToken).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(captorAccessToken))
 
         captorAccessToken.value.onNext(token)
 
@@ -161,7 +161,7 @@ class SearchViewModelTest {
 
         searchViewModel.authenticateApp(DataFactory.randomString(), DataFactory.randomString(), DataFactory.randomString())
 
-        verify(mockGetAccessToken).execute(any(), capture(captorAccessToken))
+        verify(mockGetAccessToken).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(captorAccessToken))
 
 
         captorAccessToken.value.onError(RuntimeException())
@@ -176,7 +176,7 @@ class SearchViewModelTest {
         val errorMessage = DataFactory.randomString()
         searchViewModel.authenticateApp(DataFactory.randomString(), DataFactory.randomString(), DataFactory.randomString())
 
-        verify(mockGetAccessToken).execute(any(), capture(captorAccessToken))
+        verify(mockGetAccessToken).execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.capture(captorAccessToken))
 
         captorAccessToken.value.onError(RuntimeException(errorMessage))
 
@@ -184,10 +184,10 @@ class SearchViewModelTest {
     }
 
     private fun stubGetFlightSchedulesUseCase() {
-        `when`(mockGetFlightSchedules.execute(any(), any())).thenReturn(searchViewModel.FlightSchedulesSubscriber())
+        `when`(mockGetFlightSchedules.execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.any())).thenReturn(searchViewModel.FlightSchedulesSubscriber())
     }
 
     private fun stubGetAccessTokenUseCase() {
-        `when`(mockGetAccessToken.execute(any(), any())).thenReturn(searchViewModel.AccessTokenSubscriber())
+        `when`(mockGetAccessToken.execute(me.mfathy.test.tools.any(), me.mfathy.test.tools.any())).thenReturn(searchViewModel.AccessTokenSubscriber())
     }
 }

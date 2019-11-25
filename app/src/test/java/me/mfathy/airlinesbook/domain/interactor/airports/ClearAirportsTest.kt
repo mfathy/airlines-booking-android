@@ -1,7 +1,7 @@
 package me.mfathy.airlinesbook.domain.interactor.airports
 
 import io.reactivex.Completable
-import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
+import me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests
 import me.mfathy.airlinesbook.data.repository.airports.AirportsRepository
 import org.junit.Before
 import org.junit.Rule
@@ -24,7 +24,7 @@ class ClearAirportsTest {
 
     @JvmField
     @Rule
-    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+    val immediateSchedulerRule = me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests()
 
     private lateinit var mClearAirports: ClearAirports
 

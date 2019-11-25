@@ -1,9 +1,8 @@
 package me.mfathy.airlinesbook.domain.interactor.token
 
 import io.reactivex.Single
-import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
+import me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
-import me.mfathy.airlinesbook.data.repository.airports.AirportsRepository
 import me.mfathy.airlinesbook.data.repository.auth.AuthRepository
 import me.mfathy.airlinesbook.factory.AirportFactory
 import me.mfathy.airlinesbook.factory.AirportFactory.makeAccessTokenParams
@@ -29,7 +28,7 @@ class GetAccessTokenTest {
 
     @JvmField
     @Rule
-    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+    val immediateSchedulerRule = me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests()
 
     private lateinit var mGetAccessToken: GetAccessToken
 

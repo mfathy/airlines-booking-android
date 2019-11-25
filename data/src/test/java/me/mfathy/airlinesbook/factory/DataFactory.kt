@@ -6,10 +6,8 @@ import java.util.concurrent.ThreadLocalRandom
 /**
  * Created by Mohammed Fathy on 15/12/2018.
  * dev.mfathy@gmail.com
- *
- * Factory to generate random data.
  */
-object RandomFactory {
+object DataFactory {
 
     fun randomString(): String {
         return UUID.randomUUID().toString()

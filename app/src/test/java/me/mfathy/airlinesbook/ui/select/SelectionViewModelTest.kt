@@ -2,8 +2,8 @@ package me.mfathy.airlinesbook.ui.select
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.reactivex.Flowable
-import me.mfathy.airlinesbook.ImmediateSchedulerRuleUnitTests
-import me.mfathy.airlinesbook.any
+import me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests
+import me.mfathy.test.tools.any
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.domain.interactor.airports.GetAirports
 import me.mfathy.airlinesbook.factory.AirportFactory
@@ -29,7 +29,7 @@ class SelectionViewModelTest {
 
     @JvmField
     @Rule
-    val immediateSchedulerRule = ImmediateSchedulerRuleUnitTests()
+    val immediateSchedulerRule = me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests()
 
     private val mockGetAirport = mock(GetAirports::class.java)
     private var selectionViewModel = SelectionViewModel(mockGetAirport)
@@ -45,7 +45,7 @@ class SelectionViewModelTest {
         selectionViewModel.startPagination()
         selectionViewModel.getPaginator().onNext(Pair(0, "en"))
 
-        verify(mockGetAirport, times(1)).execute(any())
+        verify(mockGetAirport, times(1)).execute(me.mfathy.test.tools.any())
     }
 
     @Test
@@ -59,7 +59,7 @@ class SelectionViewModelTest {
         selectionViewModel.startPagination()
         selectionViewModel.getPaginator().onNext(Pair(0, "en"))
 
-        verify(mockGetAirport).execute(any())
+        verify(mockGetAirport).execute(me.mfathy.test.tools.any())
 
         Assert.assertEquals(ResourceState.SUCCESS, selectionViewModel.getAirportsLiveData().value?.status)
     }
@@ -74,14 +74,14 @@ class SelectionViewModelTest {
         selectionViewModel.startPagination()
         selectionViewModel.getPaginator().onNext(Pair(0, "en"))
 
-        verify(mockGetAirport).execute(any())
+        verify(mockGetAirport).execute(me.mfathy.test.tools.any())
 
 
         Assert.assertEquals(airports, selectionViewModel.getAirportsLiveData().value?.data)
     }
 
     private fun stubGetAirportsUseCase(param: Flowable<List<AirportEntity>>) {
-        `when`(mockGetAirport.execute(any())).thenReturn(param)
+        `when`(mockGetAirport.execute(me.mfathy.test.tools.any())).thenReturn(param)
     }
 
 

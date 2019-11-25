@@ -12,10 +12,8 @@ import androidx.test.runner.AndroidJUnit4
 import io.reactivex.Flowable
 import io.reactivex.Single
 import me.mfathy.airlinesbook.R
-import me.mfathy.airlinesbook.any
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
-import me.mfathy.airlinesbook.factory.AirportTestFactory
 import me.mfathy.airlinesbook.test.TestApplication
 import org.hamcrest.Matchers.allOf
 import org.junit.Before
@@ -86,7 +84,7 @@ class SearchFlightsActivityTest {
     }
 
     private fun stubAirportsRepositoryGetAccessToken(observable: Single<AccessTokenEntity>) {
-        Mockito.`when`(TestApplication.appComponent().airportsRepository().getAccessToken(any(), any(), any()))
+        Mockito.`when`(TestApplication.appComponent().airportsRepository().getAccessToken(me.mfathy.test.tools.any(), me.mfathy.test.tools.any(), me.mfathy.test.tools.any()))
                 .thenReturn(observable)
     }
 
