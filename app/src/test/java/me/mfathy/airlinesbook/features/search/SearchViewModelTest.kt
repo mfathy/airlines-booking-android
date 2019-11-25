@@ -1,19 +1,15 @@
-package me.mfathy.airlinesbook.ui.search
+package me.mfathy.airlinesbook.features.search
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.subscribers.DisposableSubscriber
-import me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests
-import me.mfathy.test.tools.any
-import me.mfathy.test.tools.argumentCaptor
-import me.mfathy.test.tools.capture
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.model.ScheduleEntity
 import me.mfathy.airlinesbook.domain.interactor.schedules.GetFlightSchedules
 import me.mfathy.airlinesbook.domain.interactor.token.GetAccessToken
 import me.mfathy.airlinesbook.factory.AirportFactory
 import me.mfathy.airlinesbook.factory.DataFactory
-import me.mfathy.airlinesbook.ui.state.ResourceState
+import me.mfathy.airlinesbook.features.state.ResourceState
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test

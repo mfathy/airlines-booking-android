@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.base
+package me.mfathy.airlinesbook.features.base
 
 import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable

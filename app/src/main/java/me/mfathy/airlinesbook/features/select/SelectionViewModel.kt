@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.select
+package me.mfathy.airlinesbook.features.select
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,9 +8,9 @@ import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.domain.interactor.airports.GetAirports
 import me.mfathy.airlinesbook.extensions.rx.observeMainThread
 import me.mfathy.airlinesbook.extensions.rx.subscribeAndObserve
-import me.mfathy.airlinesbook.ui.base.BaseViewModel
-import me.mfathy.airlinesbook.ui.state.Resource
-import me.mfathy.airlinesbook.ui.state.ResourceState
+import me.mfathy.airlinesbook.features.base.BaseViewModel
+import me.mfathy.airlinesbook.features.state.Resource
+import me.mfathy.airlinesbook.features.state.ResourceState
 import javax.inject.Inject
 
 /**

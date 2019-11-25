@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.search
+package me.mfathy.airlinesbook.features.search
 
 
 import androidx.test.espresso.Espresso.onView

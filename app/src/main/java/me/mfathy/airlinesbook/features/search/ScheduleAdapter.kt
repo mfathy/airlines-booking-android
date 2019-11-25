@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.search
+package me.mfathy.airlinesbook.features.search
 
 import android.annotation.SuppressLint
 import android.content.Context

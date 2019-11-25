@@ -1,13 +1,11 @@
-package me.mfathy.airlinesbook.ui.select
+package me.mfathy.airlinesbook.features.select
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.reactivex.Flowable
-import me.mfathy.test.tools.ImmediateSchedulerRuleUnitTests
-import me.mfathy.test.tools.any
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.domain.interactor.airports.GetAirports
 import me.mfathy.airlinesbook.factory.AirportFactory
-import me.mfathy.airlinesbook.ui.state.ResourceState
+import me.mfathy.airlinesbook.features.state.ResourceState
 import org.junit.Assert
 import org.junit.Rule
 import org.junit.Test

@@ -11,10 +11,11 @@ class AuthDataRepository @Inject constructor(
         private val preferenceHelper: PreferenceHelper
 ): AuthRepository {
     override fun getAccessToken(clientId: String, clientSecret: String, grantType: String): Single<AccessTokenEntity> {
+
         //  Get cached access token.
         val accessToken = preferenceHelper.getAccessToken()
         return if (accessToken.accessToken.isBlank())
-        //  Get access token from remote API.
+            //  Get access token from remote API.
             factory.getRemoteDataStore()
                     .getAccessToken(
                             clientId,

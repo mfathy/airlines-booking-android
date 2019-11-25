@@ -2,9 +2,9 @@ package me.mfathy.airlinesbook.injection.modules
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import me.mfathy.airlinesbook.ui.details.FlightDetailsActivity
-import me.mfathy.airlinesbook.ui.search.SearchFlightsActivity
-import me.mfathy.airlinesbook.ui.select.SelectionActivity
+import me.mfathy.airlinesbook.features.details.FlightDetailsActivity
+import me.mfathy.airlinesbook.features.search.SearchFlightsActivity
+import me.mfathy.airlinesbook.features.select.SelectionActivity
 
 /**
  * Dagger module to provide UI and activities dependencies.

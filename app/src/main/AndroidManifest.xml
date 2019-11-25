@@ -27,7 +27,7 @@
             android:required="false" />
 
         <activity
-            android:name=".ui.search.SearchFlightsActivity"
+            android:name=".features.search.SearchFlightsActivity"
             android:label="@string/title_activity_search_flights"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -37,11 +37,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.select.SelectionActivity"
+            android:name=".features.select.SelectionActivity"
             android:label="@string/select_airport">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="me.mfathy.airlinesbook.ui.search.SearchFlightsActivity" />
+                android:value="me.mfathy.airlinesbook.features.search.SearchFlightsActivity" />
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -55,10 +55,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".ui.details.FlightDetailsActivity">
+        <activity android:name=".features.details.FlightDetailsActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="me.mfathy.airlinesbook.ui.search.SearchFlightsActivity" />
+                android:value="me.mfathy.airlinesbook.features.search.SearchFlightsActivity" />
         </activity>
     </application>
 

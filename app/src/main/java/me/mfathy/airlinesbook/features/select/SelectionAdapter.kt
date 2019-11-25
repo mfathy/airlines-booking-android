@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.select
+package me.mfathy.airlinesbook.features.select
 
 import android.view.LayoutInflater
 import android.view.View

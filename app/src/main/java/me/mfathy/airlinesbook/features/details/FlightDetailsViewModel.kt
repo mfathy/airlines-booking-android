@@ -1,13 +1,13 @@
-package me.mfathy.airlinesbook.ui.details
+package me.mfathy.airlinesbook.features.details
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.subscribers.DisposableSubscriber
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.domain.interactor.schedules.GetScheduleFlightDetails
-import me.mfathy.airlinesbook.ui.base.BaseViewModel
-import me.mfathy.airlinesbook.ui.state.Resource
-import me.mfathy.airlinesbook.ui.state.ResourceState
+import me.mfathy.airlinesbook.features.base.BaseViewModel
+import me.mfathy.airlinesbook.features.state.Resource
+import me.mfathy.airlinesbook.features.state.ResourceState
 import javax.inject.Inject
 
 /**

@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.base.widgets
+package me.mfathy.airlinesbook.features.base.widgets
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager

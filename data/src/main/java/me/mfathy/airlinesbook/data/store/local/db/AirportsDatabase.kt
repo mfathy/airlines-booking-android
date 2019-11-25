@@ -13,7 +13,7 @@ import me.mfathy.airlinesbook.data.store.local.models.CachedAirport
 /**
  * AirportsDatabase: the room database initializer.
  */
-@Database(entities = [CachedAirport::class, CacheConfig::class], version = 1)
+@Database(entities = [CachedAirport::class, CacheConfig::class], version = 1, exportSchema = false)
 abstract class AirportsDatabase : RoomDatabase() {
 
     abstract fun cachedAirportsDao(): CachedAirportsDao

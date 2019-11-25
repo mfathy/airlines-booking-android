@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.search
+package me.mfathy.airlinesbook.features.search
 
 import android.app.DatePickerDialog
 import android.app.Dialog
@@ -25,7 +25,7 @@ class DatePickerFragment : DialogFragment(), DatePickerDialog.OnDateSetListener 
         val day = c.get(Calendar.DAY_OF_MONTH)
 
         // Create a new instance of DatePickerDialog and return it
-        return DatePickerDialog(activity, this, year, month, day)
+        return DatePickerDialog(context!!, this, year, month, day)
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, day: Int) {

@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.details
+package me.mfathy.airlinesbook.features.details
 
 import android.content.Context
 import android.content.Intent
@@ -8,7 +8,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,8 +20,8 @@ import me.mfathy.airlinesbook.R
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.exceptions.ErrorMessageFactory
 import me.mfathy.airlinesbook.injection.ViewModelFactory
-import me.mfathy.airlinesbook.ui.state.Resource
-import me.mfathy.airlinesbook.ui.state.ResourceState
+import me.mfathy.airlinesbook.features.state.Resource
+import me.mfathy.airlinesbook.features.state.ResourceState
 import java.util.*
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class FlightDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
         val flightsArray: Array<Pair<String, String>> = intent.getSerializableExtra(SELECTED_SCHEDULE) as Array<Pair<String, String>>
         title = "${flightsArray.first().first} - ${flightsArray.last().second}"
 
-        flightDetailsViewModel = ViewModelProviders.of(this, viewModelFactory)
+        flightDetailsViewModel = ViewModelProvider(this, viewModelFactory)
                 .get(FlightDetailsViewModel::class.java)
 
         val mapFragment = supportFragmentManager
@@ -76,11 +76,11 @@ class FlightDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun handleAirportCodesResult(resource: Resource<List<AirportEntity>>) {
         val flightsArray: Array<Pair<String, String>> = intent.getSerializableExtra(SELECTED_SCHEDULE) as Array<Pair<String, String>>
-        when {
-            resource.status == ResourceState.LOADING -> {
+        when (resource.status) {
+            ResourceState.LOADING -> {
                 showLoading()
             }
-            resource.status == ResourceState.SUCCESS -> {
+            ResourceState.SUCCESS -> {
                 resource.data?.let { airportResult ->
                     val mapResult: Map<String, AirportEntity> = airportResult.map { it.airportCode to it }.toMap()
 
@@ -129,7 +129,7 @@ class FlightDetailsActivity : AppCompatActivity(), OnMapReadyCallback {
                     hideLoading()
                 }
             }
-            resource.status == ResourceState.ERROR -> {
+            ResourceState.ERROR -> {
                 resource.error?.let {
                     Alerter.create(this@FlightDetailsActivity)
                             .setText(ErrorMessageFactory.create(this, it))

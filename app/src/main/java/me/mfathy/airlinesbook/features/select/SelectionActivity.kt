@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.select
+package me.mfathy.airlinesbook.features.select
 
 import android.app.Activity
 import android.content.Context
@@ -8,7 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.android.AndroidInjection
@@ -17,9 +17,9 @@ import me.mfathy.airlinesbook.R
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.exceptions.ErrorMessageFactory
 import me.mfathy.airlinesbook.injection.ViewModelFactory
-import me.mfathy.airlinesbook.ui.base.widgets.AbstractPagination
-import me.mfathy.airlinesbook.ui.state.Resource
-import me.mfathy.airlinesbook.ui.state.ResourceState
+import me.mfathy.airlinesbook.features.base.widgets.AbstractPagination
+import me.mfathy.airlinesbook.features.state.Resource
+import me.mfathy.airlinesbook.features.state.ResourceState
 import java.util.*
 import javax.inject.Inject
 
@@ -43,7 +43,7 @@ class SelectionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_selection)
         AndroidInjection.inject(this)
 
-        selectionViewModel = ViewModelProviders.of(this, viewModelFactory)
+        selectionViewModel = ViewModelProvider(this, viewModelFactory)
                 .get(SelectionViewModel::class.java)
 
         mSelectionAdapter = SelectionAdapter { onAirportClick(it) }

@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.ui.state
+package me.mfathy.airlinesbook.features.state
 
 
 /**
