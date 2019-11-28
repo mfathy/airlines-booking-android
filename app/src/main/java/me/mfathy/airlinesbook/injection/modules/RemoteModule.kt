@@ -1,20 +1,22 @@
 package me.mfathy.airlinesbook.injection.modules
 
 import android.app.Application
+import androidx.annotation.NonNull
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import me.mfathy.airlinesbook.BuildConfig
-import me.mfathy.airlinesbook.data.preference.PreferenceHelper
-import me.mfathy.airlinesbook.data.store.AirportsDataStore
+import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemote
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemoteDataStore
+import me.mfathy.airlinesbook.data.store.remote.model.RequestHeaders
 import me.mfathy.airlinesbook.data.store.remote.service.AuthServiceApi
 import me.mfathy.airlinesbook.data.store.remote.service.OAuthInterceptor
 import me.mfathy.airlinesbook.data.store.remote.service.RemoteServiceApi
 import me.mfathy.airlinesbook.data.store.remote.service.ServiceFactory
 import me.mfathy.airlinesbook.data.store.remote.utils.NetworkUtils
 import me.mfathy.airlinesbook.data.store.remote.utils.NetworkUtilsImpl
+import javax.inject.Singleton
 
 /**
  * Created by Mohammed Fathy on 08/12/2018.
@@ -29,19 +31,19 @@ abstract class RemoteModule {
         @Provides
         @JvmStatic
         fun provideRemoteService(oAuthInterceptor: OAuthInterceptor): RemoteServiceApi {
-            return ServiceFactory.makeRemoteService(BuildConfig.DEBUG, oAuthInterceptor)
+            return ServiceFactory.provideRemoteService(BuildConfig.DEBUG, oAuthInterceptor)
         }
 
         @Provides
         @JvmStatic
         fun provideAuthService(): AuthServiceApi {
-            return ServiceFactory.makeAuthService(BuildConfig.DEBUG)
+            return ServiceFactory.provideAuthService(BuildConfig.DEBUG)
         }
 
         @Provides
         @JvmStatic
-        fun provideOAuthInterceptor(preferenceHelper: PreferenceHelper): OAuthInterceptor {
-            return OAuthInterceptor(preferenceHelper)
+        fun provideOAuthInterceptor(headers: RequestHeaders): OAuthInterceptor {
+            return OAuthInterceptor(headers)
         }
 
         @Provides

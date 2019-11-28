@@ -20,8 +20,7 @@ import javax.inject.Inject
  * Search view model which will handle getting access token and searching for flights.
  */
 open class SearchViewModel @Inject internal constructor(
-        private val getFlightSchedules: GetFlightSchedules,
-        private val getAccessToken: GetAccessToken
+        private val getFlightSchedules: GetFlightSchedules
 ) : BaseViewModel() {
     private val schedulesLiveData: MutableLiveData<Resource<List<ScheduleEntity>>> = MutableLiveData()
     private val accessTokenLiveData: MutableLiveData<Resource<AccessTokenEntity>> = MutableLiveData()
@@ -48,18 +47,6 @@ open class SearchViewModel @Inject internal constructor(
         addDisposables(schedulesSubscriber)
     }
 
-    fun authenticateApp(clientId: String, clientSecret: String, grantType: String) {
-        accessTokenLiveData.postValue(Resource(ResourceState.LOADING, null, null, null))
-        val params = GetAccessToken.Params(
-                clientId,
-                clientSecret,
-                grantType
-        )
-        val tokenSubscriber = getAccessToken.execute(params, AccessTokenSubscriber())
-        addDisposables(tokenSubscriber)
-
-    }
-
     inner class FlightSchedulesSubscriber : DisposableSubscriber<List<ScheduleEntity>>() {
         override fun onComplete() {}
 
@@ -72,16 +59,5 @@ open class SearchViewModel @Inject internal constructor(
         }
     }
 
-    inner class AccessTokenSubscriber : DisposableObserver<AccessTokenEntity>() {
-        override fun onComplete() {}
 
-        override fun onNext(token: AccessTokenEntity) {
-            accessTokenLiveData.postValue(Resource(ResourceState.SUCCESS, token, null, null))
-        }
-
-        override fun onError(e: Throwable) {
-            accessTokenLiveData.postValue(Resource(ResourceState.ERROR, null, e.message, e))
-        }
-
-    }
 }

@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.data.mapper.cache
+package me.mfathy.airlinesbook.data.mapper.memory
 
 import me.mfathy.airlinesbook.data.mapper.EntityMapper
 
@@ -6,7 +6,7 @@ import me.mfathy.airlinesbook.data.mapper.EntityMapper
 /**
  * Mapper contract to convert and map data entities.
  */
-interface CacheEntityMapper<E, D>: EntityMapper<E, D> {
+interface MemoryEntityMapper<E, D>: EntityMapper<E, D> {
 
     fun mapFromEntity(entity: E): D
 

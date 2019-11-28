@@ -31,7 +31,7 @@ open class AirportsRemoteDataStore @Inject constructor(
 ) : AirportsRemote {
 
     override fun getAccessToken(clientId: String, clientSecret: String, grantType: String): Single<AccessTokenEntity> {
-        return if (!networkUtils.hasConnection()) Single.error(me.mfathy.airlinesbook.data.exceptions.NetworkConnectionException())
+        return if (!networkUtils.hasConnection()) Single.error(NetworkConnectionException())
         else authServiceApi.getAccessToken(clientId, clientSecret, grantType).map {
             val accessToken = it.copy(clientId = clientId)
             accessDataMapper.mapToEntity(accessToken)
@@ -39,7 +39,7 @@ open class AirportsRemoteDataStore @Inject constructor(
     }
 
     override fun getAirports(lang: String, limit: Int, offset: Int): Flowable<List<AirportEntity>> {
-        return if (!networkUtils.hasConnection()) Flowable.error(me.mfathy.airlinesbook.data.exceptions.NetworkConnectionException())
+        return if (!networkUtils.hasConnection()) Flowable.error(NetworkConnectionException())
         else serviceApi.get().getAirports(lang, limit, offset).map { airportsResponse ->
             airportsResponse.airportResource.airports.airportList.map {
                 airportsDataMapper.mapToEntity(it)
@@ -48,7 +48,7 @@ open class AirportsRemoteDataStore @Inject constructor(
     }
 
     override fun getFlightSchedules(origin: String, destination: String, flightDate: String, limit: Int, offset: Int): Flowable<List<ScheduleEntity>> {
-        return if (!networkUtils.hasConnection()) Flowable.error(me.mfathy.airlinesbook.data.exceptions.NetworkConnectionException())
+        return if (!networkUtils.hasConnection()) Flowable.error(NetworkConnectionException())
         else serviceApi.get().getFlightSchedules(origin, destination, flightDate, limit, offset).map { scheduleResponse ->
             scheduleResponse.scheduleResource.schedule.map {
                 scheduleDataMapper.mapToEntity(it)
@@ -57,7 +57,7 @@ open class AirportsRemoteDataStore @Inject constructor(
     }
 
     override fun getAirport(airportCode: String, lang: String, limit: Int, offset: Int): Single<AirportEntity> {
-        return if (!networkUtils.hasConnection()) Single.error(me.mfathy.airlinesbook.data.exceptions.NetworkConnectionException())
+        return if (!networkUtils.hasConnection()) Single.error(NetworkConnectionException())
         else serviceApi.get().getAirport(airportCode, lang, 1, offset).map { response ->
             airportsDataMapper.mapToEntity(response.airportResource.airports.airportList.first())
         }

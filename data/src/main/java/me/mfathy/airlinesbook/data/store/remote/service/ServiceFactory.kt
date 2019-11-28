@@ -23,32 +23,34 @@ import java.util.concurrent.TimeUnit
  */
 object ServiceFactory {
 
-    fun makeAuthService(isDebug: Boolean): AuthServiceApi {
-        val okHttpClient = makeOkHttpClient(makeLoggingInterceptor((isDebug)), null)
-        return makeAuthService(okHttpClient, Gson())
+    fun provideAuthService(debugMode: Boolean): AuthServiceApi {
+        val loggingInterceptor = provideLoggingInterceptor((debugMode))
+        val okHttpClient = provideOkHttpClient(loggingInterceptor, null)
+        return provideAuthService(okHttpClient, Gson())
     }
 
-    private fun makeAuthService(okHttpClient: OkHttpClient, mGson: Gson): AuthServiceApi {
+    fun provideRemoteService(debugMode: Boolean, oAuthInterceptor: OAuthInterceptor): RemoteServiceApi {
+        val loggingInterceptor = provideLoggingInterceptor((debugMode))
+        val okHttpClient = provideOkHttpClient(loggingInterceptor, oAuthInterceptor)
+        val gsonBuilder = provideGsonBuilder()
+        gsonBuilder.registerTypeAdapter(FlightSchedulesResponse::class.java, ScheduleDeserializer())
+        gsonBuilder.registerTypeAdapter(AirportsResponse::class.java, AirportDeserializer())
+        val gson = gsonBuilder.create()
+        return provideRemoteService(okHttpClient, gson)
+    }
+
+    private fun provideAuthService(okHttpClient: OkHttpClient, gson: Gson): AuthServiceApi {
         val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create(mGson))
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build()
 
         return retrofit.create(AuthServiceApi::class.java)
     }
 
-    fun makeRemoteService(isDebug: Boolean, oAuthInterceptor: OAuthInterceptor?): RemoteServiceApi {
-        val okHttpClient = makeOkHttpClient(makeLoggingInterceptor((isDebug)), oAuthInterceptor)
-        val gsonBuilder = GsonBuilder()
-        gsonBuilder.registerTypeAdapter(FlightSchedulesResponse::class.java, ScheduleDeserializer())
-        gsonBuilder.registerTypeAdapter(AirportsResponse::class.java, AirportDeserializer())
-        val gson = gsonBuilder.create()
-        return makeRemoteService(okHttpClient, gson)
-    }
-
-    private fun makeRemoteService(okHttpClient: OkHttpClient, gson: Gson): RemoteServiceApi {
+    private fun provideRemoteService(okHttpClient: OkHttpClient, gson: Gson): RemoteServiceApi {
         val retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
@@ -59,12 +61,9 @@ object ServiceFactory {
         return retrofit.create(RemoteServiceApi::class.java)
     }
 
-    private fun makeOkHttpClient(
-            httpLoggingInterceptor: HttpLoggingInterceptor,
-            oAuthInterceptor: OAuthInterceptor?
-    ): OkHttpClient {
+    private fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor, oAuthInterceptor: OAuthInterceptor?): OkHttpClient {
         val builder = OkHttpClient.Builder()
-        builder.addInterceptor(httpLoggingInterceptor)
+        builder.addInterceptor(loggingInterceptor)
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)
 
@@ -74,13 +73,12 @@ object ServiceFactory {
         return builder.build()
     }
 
-    private fun makeLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor {
+    private fun provideLoggingInterceptor(isDebug: Boolean): HttpLoggingInterceptor {
         val logging = HttpLoggingInterceptor()
-        logging.level = if (isDebug) {
-            HttpLoggingInterceptor.Level.BODY
-        } else {
-            HttpLoggingInterceptor.Level.NONE
-        }
+        logging.level = if (isDebug) HttpLoggingInterceptor.Level.BODY
+        else HttpLoggingInterceptor.Level.NONE
         return logging
     }
+
+    private fun provideGsonBuilder(): GsonBuilder = GsonBuilder()
 }

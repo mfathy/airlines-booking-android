@@ -2,6 +2,9 @@ package me.mfathy.airlinesbook.data.store
 
 import me.mfathy.airlinesbook.data.store.local.AirportsCache
 import me.mfathy.airlinesbook.data.store.local.AirportsCacheDataStore
+import me.mfathy.airlinesbook.data.store.memory.AuthMemoryStore
+import me.mfathy.airlinesbook.data.store.memory.MemoryCache
+import me.mfathy.airlinesbook.data.store.memory.models.InMemoryToken
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemote
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemoteDataStore
 import javax.inject.Inject
@@ -14,6 +17,7 @@ import javax.inject.Inject
  * object.
  */
 open class AirportsDataStoreFactory @Inject constructor(
+        private val memoryDataStore: AuthMemoryStore,
         private val cacheDataStore: AirportsCacheDataStore,
         private val remoteDataStore: AirportsRemoteDataStore) {
 
@@ -31,5 +35,9 @@ open class AirportsDataStoreFactory @Inject constructor(
 
     open fun getRemoteDataStore(): AirportsRemote {
         return remoteDataStore
+    }
+
+    open fun getMemoryDataStore(): MemoryCache{
+        return memoryDataStore
     }
 }

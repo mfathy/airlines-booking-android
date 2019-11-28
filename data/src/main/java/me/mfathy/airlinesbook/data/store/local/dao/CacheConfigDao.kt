@@ -15,7 +15,7 @@ import me.mfathy.airlinesbook.data.store.local.models.CacheConfig
 @Dao
 abstract class CacheConfigDao {
 
-    @Query(me.mfathy.airlinesbook.data.config.AppConstants.QUERY_GET_CONFIG)
+    @Query(AppConstants.QUERY_GET_CONFIG)
     abstract fun getCacheConfig(): Single<CacheConfig>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import dagger.android.AndroidInjector
 import me.mfathy.airlinesbook.AirlinesApplication
 import me.mfathy.airlinesbook.injection.modules.*
 import javax.inject.Singleton
@@ -18,8 +19,9 @@ import javax.inject.Singleton
     ViewModelsModule::class,
     DataModule::class,
     CacheModule::class,
+    MemoryModule::class,
     RemoteModule::class])
-interface ApplicationComponent {
+interface ApplicationComponent: AndroidInjector<AirlinesApplication> {
 
     @Component.Builder
     interface Builder {
@@ -28,7 +30,5 @@ interface ApplicationComponent {
 
         fun build(): ApplicationComponent
     }
-
-    fun inject(app: AirlinesApplication)
 
 }

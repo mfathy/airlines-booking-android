@@ -1,6 +1,7 @@
 package me.mfathy.airlinesbook.data.store.remote.service
 
-import me.mfathy.airlinesbook.data.preference.PreferenceHelper
+import android.annotation.SuppressLint
+import me.mfathy.airlinesbook.data.store.remote.model.RequestHeaders
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
@@ -12,20 +13,24 @@ import javax.inject.Inject
  * Authentication interceptor to provide access token to all remote api services.
  */
 class OAuthInterceptor @Inject constructor(
-        private val preferenceHelper: PreferenceHelper
+        private val headers: RequestHeaders
 ) : Interceptor {
 
+    @SuppressLint("DefaultLocale")
     override fun intercept(chain: Interceptor.Chain): Response {
 
-        val accessToken = preferenceHelper.getAccessToken()
-
         val original = chain.request()
-        val builder = original.newBuilder()
-                .header("Accept", "application/json")
-                .header("Authorization", "${accessToken.tokenType.capitalize()} ${accessToken.accessToken}")
+        return if (original.url.encodedPath.contains("oauth") || headers.accessToken == null)
+            chain.proceed(original)
+        else {
+            val builder = original.newBuilder()
+                    .header("Accept", "application/json")
+                    .header("Authorization", "${headers.accessToken?.tokenType?.capitalize()} ${headers.accessToken?.accessToken}")
 
-        val request = builder.build()
-        return chain.proceed(request)
+            val request = builder.build()
+            chain.proceed(request)
+        }
+
     }
 
 }

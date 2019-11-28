@@ -8,10 +8,12 @@ import me.mfathy.airlinesbook.data.repository.auth.AuthDataRepository
 import me.mfathy.airlinesbook.data.repository.auth.AuthRepository
 import me.mfathy.airlinesbook.data.repository.schedules.SchedulesDataRepository
 import me.mfathy.airlinesbook.data.repository.schedules.SchedulesRepository
+import javax.inject.Singleton
 
 /**
  * Dagger module to provide data repository dependencies.
  */
+
 @Module
 abstract class DataModule {
 

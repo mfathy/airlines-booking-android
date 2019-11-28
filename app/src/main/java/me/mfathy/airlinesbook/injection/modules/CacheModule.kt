@@ -10,6 +10,7 @@ import me.mfathy.airlinesbook.data.store.AirportsDataStore
 import me.mfathy.airlinesbook.data.store.local.AirportsCache
 import me.mfathy.airlinesbook.data.store.local.AirportsCacheDataStore
 import me.mfathy.airlinesbook.data.store.local.db.AirportsDatabase
+import javax.inject.Singleton
 
 /**
  * Created by Mohammed Fathy on 08/12/2018.

@@ -8,6 +8,7 @@ package me.mfathy.airlinesbook.data.config
  */
 object AppConstants {
 
+    const val KEY_SAVED_TOKEN: String = "token"
     /**
      *  Base server url.
      */

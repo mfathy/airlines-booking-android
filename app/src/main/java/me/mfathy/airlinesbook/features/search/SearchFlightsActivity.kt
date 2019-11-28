@@ -78,7 +78,7 @@ class SearchFlightsActivity : AppCompatActivity(), DatePickerListener {
         originLayout.setOnClickListener {
             startActivityForResult(
                     SelectionActivity.getStartIntent(this@SearchFlightsActivity),
-                    SelectionActivity.PICK_ORIGIN_AIRPORT_REQUEST
+                    PICK_ORIGIN_AIRPORT_REQUEST
             )
         }
 
@@ -121,14 +121,10 @@ class SearchFlightsActivity : AppCompatActivity(), DatePickerListener {
                     }
                 })
 
-        searchViewModel.authenticateApp(
-                BuildConfig.CLIENT_ID,
-                BuildConfig.CLIENT_SECRET,
-                BuildConfig.GRANT_TYPE
-        )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_ORIGIN_AIRPORT_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 data?.let {
