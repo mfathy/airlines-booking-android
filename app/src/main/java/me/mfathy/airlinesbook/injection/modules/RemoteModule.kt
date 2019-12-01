@@ -6,7 +6,6 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import me.mfathy.airlinesbook.BuildConfig
-import me.mfathy.airlinesbook.data.model.AccessTokenEntity
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemote
 import me.mfathy.airlinesbook.data.store.remote.AirportsRemoteDataStore
 import me.mfathy.airlinesbook.data.store.remote.model.RequestHeaders
@@ -41,7 +40,15 @@ abstract class RemoteModule {
         }
 
         @Provides
-        @JvmStatic
+        @Singleton
+        @NonNull
+        fun provideRequestHeaders(): RequestHeaders {
+            return RequestHeaders()
+        }
+
+        @Provides
+        @Singleton
+        @NonNull
         fun provideOAuthInterceptor(headers: RequestHeaders): OAuthInterceptor {
             return OAuthInterceptor(headers)
         }

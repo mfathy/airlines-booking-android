@@ -17,7 +17,7 @@ class AuthMemoryStore @Inject constructor(private val lruCache: LruCache<String,
                 val currentTime = System.currentTimeMillis()
                 if (currentTime > token.expiresIn) lruCache.remove(key)
                 Single.just(memoryTokenMapper.mapToEntity(token))
-            } else Single.just(AccessTokenEntity())
+            } else Single.just(AccessTokenEntity("","","",0))
         }
 
 

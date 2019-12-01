@@ -20,12 +20,12 @@ class OAuthInterceptor @Inject constructor(
     override fun intercept(chain: Interceptor.Chain): Response {
 
         val original = chain.request()
-        return if (original.url.encodedPath.contains("oauth") || headers.accessToken == null)
+        return if (original.url.encodedPath.contains("oauth"))
             chain.proceed(original)
         else {
             val builder = original.newBuilder()
                     .header("Accept", "application/json")
-                    .header("Authorization", "${headers.accessToken?.tokenType?.capitalize()} ${headers.accessToken?.accessToken}")
+                    .header("Authorization", "${headers.accessToken.tokenType.capitalize()} ${headers.accessToken.accessToken}")
 
             val request = builder.build()
             chain.proceed(request)
