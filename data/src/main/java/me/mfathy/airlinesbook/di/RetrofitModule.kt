@@ -6,6 +6,8 @@ import dagger.Module
 import dagger.Provides
 import me.mfathy.airlinesbook.data.BuildConfig
 import me.mfathy.airlinesbook.data.model.AccessTokenEntity
+import me.mfathy.airlinesbook.data.store.remote.AirportsRemote
+import me.mfathy.airlinesbook.data.store.remote.AirportsRemoteDataStore
 import me.mfathy.airlinesbook.data.store.remote.model.RequestHeaders
 import me.mfathy.airlinesbook.data.store.remote.service.AuthServiceApi
 import me.mfathy.airlinesbook.data.store.remote.service.OAuthInterceptor
@@ -14,6 +16,13 @@ import me.mfathy.airlinesbook.data.store.remote.service.ServiceFactory
 import me.mfathy.airlinesbook.data.store.remote.utils.NetworkUtils
 import me.mfathy.airlinesbook.data.store.remote.utils.NetworkUtilsImpl
 import javax.inject.Singleton
+
+/**
+ * Created by Mohammed Fathy on 08/12/2018.
+ * dev.mfathy@gmail.com
+ *
+ * Dagger module to provide remote dependencies.
+ */
 
 @Module
 class RetrofitModule {
@@ -52,5 +61,12 @@ class RetrofitModule {
     @NonNull
     fun providesNetworkUtils(app: Application): NetworkUtils {
         return NetworkUtilsImpl(app)
+    }
+
+    @Provides
+    @Singleton
+    @NonNull
+    fun bindRemoteStore(remote: AirportsRemoteDataStore): AirportsRemote {
+        return remote
     }
 }

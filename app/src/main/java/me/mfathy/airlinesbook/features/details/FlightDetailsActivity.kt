@@ -19,7 +19,7 @@ import dagger.android.AndroidInjection
 import me.mfathy.airlinesbook.R
 import me.mfathy.airlinesbook.data.model.AirportEntity
 import me.mfathy.airlinesbook.exceptions.ErrorMessageFactory
-import me.mfathy.airlinesbook.injection.ViewModelFactory
+import me.mfathy.airlinesbook.injection.factories.ViewModelFactory
 import me.mfathy.airlinesbook.features.state.Resource
 import me.mfathy.airlinesbook.features.state.ResourceState
 import java.util.*

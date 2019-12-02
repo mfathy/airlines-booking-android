@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.injection.modules
+package me.mfathy.airlinesbook.di
 
 import android.util.LruCache
 import dagger.Binds

@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.injection
+package me.mfathy.airlinesbook.injection.factories
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

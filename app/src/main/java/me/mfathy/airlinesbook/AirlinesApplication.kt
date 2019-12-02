@@ -8,7 +8,7 @@ import dagger.android.HasAndroidInjector
 import me.mfathy.airlinesbook.data.store.remote.model.RequestHeaders
 import me.mfathy.airlinesbook.domain.interactor.token.GetAccessToken
 import me.mfathy.airlinesbook.extensions.rx.computation
-import me.mfathy.airlinesbook.injection.DaggerApplicationComponent
+import me.mfathy.airlinesbook.injection.component.DaggerApplicationComponent
 import javax.inject.Inject
 
 
