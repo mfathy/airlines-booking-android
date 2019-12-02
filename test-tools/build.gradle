@@ -33,7 +33,4 @@ dependencies {
     // mocking
     implementation "org.mockito:mockito-core:${rootProject.ext.mockitoVersion}"
     implementation "org.mockito:mockito-inline:${rootProject.ext.mockitoInlineVersion}"
-
-    // assertj
-    implementation "org.assertj:assertj-core:${rootProject.ext.assertJVersion}"
 }
