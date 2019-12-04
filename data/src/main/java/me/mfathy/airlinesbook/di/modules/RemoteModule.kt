@@ -1,4 +1,4 @@
-package me.mfathy.airlinesbook.di
+package me.mfathy.airlinesbook.di.modules
 
 import android.app.Application
 import androidx.annotation.NonNull
@@ -25,7 +25,7 @@ import javax.inject.Singleton
  */
 
 @Module
-class RetrofitModule {
+class RemoteModule {
     @Provides
     @Singleton
     @NonNull
@@ -66,7 +66,7 @@ class RetrofitModule {
     @Provides
     @Singleton
     @NonNull
-    fun bindRemoteStore(remote: AirportsRemoteDataStore): AirportsRemote {
+    fun providesRemoteStore(remote: AirportsRemoteDataStore): AirportsRemote {
         return remote
     }
 }

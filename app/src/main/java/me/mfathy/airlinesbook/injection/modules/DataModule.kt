@@ -18,9 +18,6 @@ import javax.inject.Singleton
 abstract class DataModule {
 
     @Binds
-    abstract fun bindAuthRepository(repository: AuthDataRepository): AuthRepository
-
-    @Binds
     abstract fun bindAirportsRepository(repository: AirportsDataRepository): AirportsRepository
 
     @Binds

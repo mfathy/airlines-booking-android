@@ -6,11 +6,10 @@ import dagger.Component
 import dagger.android.AndroidInjectionModule
 import dagger.android.AndroidInjector
 import me.mfathy.airlinesbook.AirlinesApplication
-import me.mfathy.airlinesbook.di.CacheModule
-import me.mfathy.airlinesbook.di.MemoryModule
-import me.mfathy.airlinesbook.di.RemoteModule
-import me.mfathy.airlinesbook.di.RetrofitModule
-import me.mfathy.airlinesbook.injection.modules.*
+import me.mfathy.airlinesbook.di.modules.*
+import me.mfathy.airlinesbook.injection.modules.ApplicationModule
+import me.mfathy.airlinesbook.injection.modules.UiModule
+import me.mfathy.airlinesbook.injection.modules.ViewModelsModule
 import javax.inject.Singleton
 
 /**
@@ -21,10 +20,12 @@ import javax.inject.Singleton
     ApplicationModule::class,
     UiModule::class,
     ViewModelsModule::class,
-    DataModule::class,
+    AuthModule::class,
+    AirportsModule::class,
+    SchedulesModule::class,
     CacheModule::class,
     MemoryModule::class,
-    RetrofitModule::class])
+    RemoteModule::class])
 interface ApplicationComponent : AndroidInjector<AirlinesApplication> {
 
     @Component.Builder
